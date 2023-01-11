@@ -18,4 +18,8 @@ public interface UserService extends UserDetailsService{
 	   
 	   // 시큐리티 권한 얻기
 	   Collection<GrantedAuthority> getAuthorities(String username);
+	   
+	   // 유저 리스트 
+	   public List<User> selectUserList();
+	
 	}

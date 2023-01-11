@@ -73,7 +73,7 @@ public class SecurityConfig  {
          .invalidSessionUrl("/login")
          .and()
 //      csrf      
-      .csrf();
+      .csrf().disable();
      
       return http.build();
    }

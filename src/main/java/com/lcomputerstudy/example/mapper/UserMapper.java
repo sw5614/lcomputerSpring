@@ -18,5 +18,7 @@ public interface UserMapper {
 
 	   // 권한 생성
 	   public void createAuthority(User user);
+
+	   public List<User> listUser();
 }
 

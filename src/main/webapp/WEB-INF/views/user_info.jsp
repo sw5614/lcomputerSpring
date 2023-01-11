@@ -13,7 +13,11 @@
         <div>
            <sec:authorize access="isAuthenticated()">
               <sec:authentication property="principal" var="principal"/>
-               <h2>${principal }</h2>
+               <h2> 사용자ID : ${principal.username}</h2>
+               <h2> 사용자이름 : ${principal.uName}</h2>
+               <h2> 비밀번호 : ${principal.password}</h2>
+               <h2> 가입날짜 : ${principal.uDateTime}</h2>
+               <h2> 권한 : ${principal.authorities}</h2>
            </sec:authorize>
            <a href="/">돌아가기</a>
         </div>

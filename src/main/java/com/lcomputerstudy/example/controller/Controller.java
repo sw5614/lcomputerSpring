@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.lcomputerstudy.example.domain.Board;
@@ -21,12 +21,13 @@ public class Controller {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired UserService userservice;
 	@Autowired BoardService boardservice;
+	@Autowired PasswordEncoder encoder;
 	
 	@RequestMapping("/")
 	public String home(Model model) { //Model은 스프링 기능, key와 value로 이루어져있는 HashMap
 		
 		List<Board> list = boardservice.selectBoardList();  
-		model.addAttribute("list", list);
+		model.addAttribute("list", list);  // Model 객체 (request.setAttribute() 와 비슷한역할)
 		logger.debug("debug");
 	     logger.info("info");
 	     logger.error("error");
@@ -41,7 +42,7 @@ public class Controller {
 	@RequestMapping("/signup")
 	   public String signup(User user) {
 	      //비밀번호 암호화
-	      String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+	      String encodedPassword = encoder.encode(user.getPassword());
 	      
 	      //유저 데이터 세팅
 	      user.setPassword(encodedPassword);
@@ -59,26 +60,38 @@ public class Controller {
 	      return "/login";
 	     
 	   }
-    @RequestMapping(value="/login")     
+    @RequestMapping(value="/login")      
     public String beforeLogin(Model model) {
     	return "/login";
     }
-    @Secured({"ROLE_ADMIN"})
+       @Secured({"ROLE_ADMIN"})
 	   @RequestMapping(value="/admin")
 	   public String admin(Model model) {
 	      return "/admin";
 	   }
 	   
 	   @Secured({"ROLE_USER"})
-	   @RequestMapping(value="/user/info")
+	   @RequestMapping(value="/user/info") 
 	   public String userInfo(Model model) {
-	      
 	      return "/user_info";
 	   }
 	   
-	   @RequestMapping(value="/denied")
+	   @RequestMapping(value="/denied") 
 	   public String denied(Model model) {
 	      return "/denied";
 	   }
+	   
+	   @RequestMapping(value="/board/list")
+	   public String boardList(Model model){ // 게시물 목록 
+		  List<Board> list = boardservice.selectBoardList();  
+		  model.addAttribute("list", list);  
+		  return "/board_list";
+	   }
+	   @RequestMapping(value="/user/list")
+	   public String userList(Model model){ // 게시물 목록 
+		  List<User> list = userservice.selectUserList();  
+		  model.addAttribute("list", list);  
+		  return "/user_list";
+		   }
 }
 

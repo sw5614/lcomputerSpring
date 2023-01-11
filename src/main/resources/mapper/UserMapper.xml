@@ -4,7 +4,7 @@
  <!-- 권한 읽기 -->
     <select id="readAuthorities" parameterType="String" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
        SELECT         u_auth
-       FROM         lc_auth
+       FROM        	 lc_auth
        WHERE          1=1
        AND            u_id = #{username}
     </select>
@@ -22,6 +22,19 @@
       FROM         lc_user
       WHERE         1=1
       AND            u_id   =   #{username}
+   </select>
+   
+   <select id="listUser" resultType="User"> <!--  as 부분은 user.java에 변수이름으로  -->
+     SELECT         u_id                 						    as   username,
+		                 u_password             					as password,
+		                 u_name                						as   uName,
+		                 u_isAccountNonExpired        as isAccountNonExpired,
+		                 u_isAccountNonLocked    	    as isAccountNonLocked,
+		                 u_isCredentialNonExpired    as isCredentialsNonExpired,
+		                 u_isEnabled          				    as isEnabled,
+		                 u_datetime							as uDateTime
+     FROM         lc_user
+     WHERE         1=1
    </select>
    
    <!-- 회원 등록 -->
