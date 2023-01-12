@@ -21,5 +21,7 @@ public interface UserService extends UserDetailsService{
 	   
 	   // 유저 리스트 
 	   public List<User> selectUserList();
+	   
+	   public void editAuthorities(User user); // 권한 변경 
 	
 	}

@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>현재 접속자 정보 </title>
 </head>
 <body>
 	<h1>마이 페이지</h1>
 	<hr>
         <div>
            <sec:authorize access="isAuthenticated()">
-              <sec:authentication property="principal" var="principal"/>
+              <sec:authentication property="principal" var="principal"/>  <!--현재접속자 정보 ( session 정보 -->
                <h2> 사용자ID : ${principal.username}</h2>
                <h2> 사용자이름 : ${principal.uName}</h2>
                <h2> 비밀번호 : ${principal.password}</h2>

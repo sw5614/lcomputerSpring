@@ -18,9 +18,8 @@ public class UserServiceImpl implements UserService {
    
    @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      User user = userMapper.readUser(username);
+	  User user = userMapper.readUser(username);
       user.setAuthorities(getAuthorities(username));
-      
       return user;
    }
    
@@ -49,5 +48,13 @@ public class UserServiceImpl implements UserService {
 	public List<User> selectUserList() {
 		return userMapper.listUser();
 	}
+
+	@Override
+	public void editAuthorities(User user) {
+		userMapper.editAuthority(user);
+		
+	}
+	
+	
 
 }

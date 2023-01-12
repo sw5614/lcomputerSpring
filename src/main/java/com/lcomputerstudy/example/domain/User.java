@@ -13,14 +13,15 @@ public class User implements UserDetails {
 	private String password;		//u_password
 	private String uName;			//u_name
 	private String uDateTime;	//u_datetime
-	
+	private String uAuth; //u_auth
 	//security 관련
-	private Collection<? extends GrantedAuthority> authorities;
+	private Collection<? extends GrantedAuthority> authorities; // toString은되는데 콜렉션 grantAuthoriy타입으로 세팅하려면 ?  
 	
 	private boolean isAccountNonExpired;
 	private boolean isAccountNonLocked;
 	private boolean isCredentialsNonExpired;
 	private boolean isEnabled;
+	
 	
 
 	public String getuName() {
@@ -68,44 +69,46 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() { //?? 
-		// TODO Auto-generated method stub
 		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return username;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return isAccountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return isAccountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return isCredentialsNonExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return isEnabled;
+	}
+	
+	
+	public String getuAuth() {
+		return uAuth;
+	}
+
+	public void setuAuth(String uAuth) {
+		this.uAuth = uAuth;
 	}
 
 	@Override

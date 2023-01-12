@@ -25,16 +25,20 @@
    </select>
    
    <select id="listUser" resultType="User"> <!--  as 부분은 user.java에 변수이름으로  -->
-     SELECT         u_id                 						    as   username,
+     SELECT        	 ta.u_id                 						    as   username,
 		                 u_password             					as password,
 		                 u_name                						as   uName,
 		                 u_isAccountNonExpired        as isAccountNonExpired,
 		                 u_isAccountNonLocked    	    as isAccountNonLocked,
 		                 u_isCredentialNonExpired    as isCredentialsNonExpired,
 		                 u_isEnabled          				    as isEnabled,
-		                 u_datetime							as uDateTime
-     FROM         lc_user
-     WHERE         1=1
+		                 u_datetime							as uDateTime,
+		                 u_auth								as uAuth
+     FROM         lc_user ta
+     JOIN		  lc_auth tb 
+     ON			  ta.u_id=tb.u_id
+     WHERE 1=1
+     ORDER BY uDateTime asc	
    </select>
    
    <!-- 회원 등록 -->
@@ -56,6 +60,12 @@
          #{isCredentialsNonExpired},
          #{isEnabled}
       )
+   </insert>   
+   
+   <insert id="editAuthority" parameterType="User">
+   	UPDATE lc_auth
+   	SET u_auth = #{uAuth}
+   	WHERE u_id=#{username}
    </insert>   
    
     <!-- 유저 권한 추가 -->

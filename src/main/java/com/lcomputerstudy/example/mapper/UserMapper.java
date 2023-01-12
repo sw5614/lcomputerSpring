@@ -7,10 +7,10 @@ import com.lcomputerstudy.example.domain.User;
 
 @Mapper
 public interface UserMapper {
-	   //유저읽기
+	   //유저 읽기
 	   public User readUser(String username);
 	   
-	   //유저생성
+	   //유저 생성
 	   public void createUser(User user);
 
 	   // 권한 읽기
@@ -18,7 +18,11 @@ public interface UserMapper {
 
 	   // 권한 생성
 	   public void createAuthority(User user);
-
+	   
+	   //유저 리스트
 	   public List<User> listUser();
+	   
+	   //유저 권한 변경 
+	   public void editAuthority(User user);
 }
 

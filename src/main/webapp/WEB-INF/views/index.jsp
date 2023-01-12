@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Spring 게시판 </title>
+<title>HOME </title>
 </head>
 <body>
         <hr>

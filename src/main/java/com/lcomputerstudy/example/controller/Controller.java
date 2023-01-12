@@ -2,6 +2,8 @@ package com.lcomputerstudy.example.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class Controller {
 	@Autowired UserService userservice;
 	@Autowired BoardService boardservice;
 	@Autowired PasswordEncoder encoder;
+	
 	
 	@RequestMapping("/")
 	public String home(Model model) { //Model은 스프링 기능, key와 value로 이루어져있는 HashMap
@@ -92,6 +95,14 @@ public class Controller {
 		  List<User> list = userservice.selectUserList();  
 		  model.addAttribute("list", list);  
 		  return "/user_list";
+		   }
+	   
+	   @RequestMapping(value="/user/authEdit") 
+	   public String editUserAuth(Model model,User user){ // 사용자 권한 설정  
+		  userservice.editAuthorities(user);
+		  List<User> list = userservice.selectUserList();  
+		  model.addAttribute("list", list);  
+		  return "/aj_user_list";
 		   }
 }
 
