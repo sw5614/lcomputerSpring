@@ -56,9 +56,17 @@ sprint security
 -board list 진행중 
 
 -userlist 진행중
+ㄴ유저 id 클릭시 개인정보 출력 -- 완료 
 
 -pagination  domain에서 만들어서 따로 관리 
 
--login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
+ㄴ default 페이지 설정 ? ajax랑 충돌 
 
- ㄴusername 클릭하면 사용자정보나 로그인후 화면 띄우기 
+ㄴuserpagination 진행중 
+
+ㄴindex -> userlist defaulpage 어떻게 ? 
+ 
+
+-login 세션값(username) 받아서 오른쪽위에 계속 띄우기 -- 완료 
+
+ ㄴusername 클릭하면 사용자정보나 로그인후 화면 띄우기  -- 완료 
