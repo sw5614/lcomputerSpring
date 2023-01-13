@@ -1,9 +1,6 @@
 package com.lcomputerstudy.example.controller;
 
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.lcomputerstudy.example.domain.Board;
+import com.lcomputerstudy.example.domain.Pagination;
 import com.lcomputerstudy.example.domain.User;
 import com.lcomputerstudy.example.service.BoardService;
 import com.lcomputerstudy.example.service.UserService;
@@ -24,6 +22,8 @@ public class Controller {
 	@Autowired UserService userservice;
 	@Autowired BoardService boardservice;
 	@Autowired PasswordEncoder encoder;
+	int pageNum=1;
+	int recPage=1; // 디폴트 페이지 
 	
 	
 	@RequestMapping("/")
@@ -63,46 +63,65 @@ public class Controller {
 	      return "/login";
 	     
 	   }
-    @RequestMapping(value="/login")      
+   @RequestMapping(value="/login")      
     public String beforeLogin(Model model) {
     	return "/login";
     }
-       @Secured({"ROLE_ADMIN"})
-	   @RequestMapping(value="/admin")
-	   public String admin(Model model) {
-	      return "/admin";
+   @Secured({"ROLE_ADMIN"})
+   @RequestMapping(value="/admin")
+   public String admin(Model model) {
+      return "/admin";
+   }
+   
+   @Secured({"ROLE_USER"}) //현재 로그인 유저 정보 
+   @RequestMapping(value="/user/login_info") 
+   public String loginUserInfo(Model model) {
+      return "/login_user_info";
+   }
+   
+   @RequestMapping(value="/denied") 
+   public String denied(Model model) {
+      return "/denied";
+   }
+   
+   @RequestMapping(value="/board/list")
+   public String boardList(Model model){ // 게시물 목록 
+	  List<Board> list = boardservice.selectBoardList();  
+	  model.addAttribute("list", list);  
+	  return "/board_list";
+   }
+   @RequestMapping(value="/user/list")
+   public String userList(Model model,int page){ // 게시물 목록 
+	  page=recPage;
+	  pageNum =(page-1)*5;
+	  Pagination pagination = new Pagination();
+	  pagination.setCount(userservice.countUser());
+	  pagination.setPage(pageNum);
+	  pagination.init();
+	   List<User> list = userservice.selectUserList(pageNum);  
+	  model.addAttribute("list", list);  
+	  model.addAttribute("pagination",pagination);
+	  return "/user_list";
 	   }
-	   
-	   @Secured({"ROLE_USER"})
-	   @RequestMapping(value="/user/info") 
-	   public String userInfo(Model model) {
-	      return "/user_info";
+   
+   @RequestMapping(value="/user/authEdit") 
+   public String editUserAuth(Model model,User user,int page){ // 사용자 권한 설정  
+	  pageNum =(page-1)*5;
+	  Pagination pagination = new Pagination();
+	  pagination.setCount(userservice.countUser());
+	  pagination.setPage(pageNum);
+	  pagination.init();
+	  userservice.editAuthorities(user);
+	  List<User> list = userservice.selectUserList(pageNum);  
+	  model.addAttribute("list", list);  
+	  model.addAttribute("pagination",pagination);
+	  return "/aj_user_list";
 	   }
-	   
-	   @RequestMapping(value="/denied") 
-	   public String denied(Model model) {
-	      return "/denied";
-	   }
-	   
-	   @RequestMapping(value="/board/list")
-	   public String boardList(Model model){ // 게시물 목록 
-		  List<Board> list = boardservice.selectBoardList();  
-		  model.addAttribute("list", list);  
-		  return "/board_list";
-	   }
-	   @RequestMapping(value="/user/list")
-	   public String userList(Model model){ // 게시물 목록 
-		  List<User> list = userservice.selectUserList();  
-		  model.addAttribute("list", list);  
-		  return "/user_list";
-		   }
-	   
-	   @RequestMapping(value="/user/authEdit") 
-	   public String editUserAuth(Model model,User user){ // 사용자 권한 설정  
-		  userservice.editAuthorities(user);
-		  List<User> list = userservice.selectUserList();  
-		  model.addAttribute("list", list);  
-		  return "/aj_user_list";
-		   }
+   @RequestMapping(value="/user/info") 
+   public String UserInfo(Model model, String username) {
+      model.addAttribute("user",userservice.readUser(username) );
+	  return "/user_info";
+   }
+
 }
 

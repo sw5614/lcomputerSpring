@@ -11,20 +11,23 @@
 
    <!-- 회원 불러오기 -->
    <select id="readUser" parameterType="String" resultType="User"> <!--  as 부분은 user.java에 변수이름으로  -->
-      SELECT         u_id                 						    as   username,
+      SELECT         ta.u_id                 						    as   username,
 			                 u_password             					as password,
 			                 u_name                						as   uName,
 			                 u_isAccountNonExpired        as isAccountNonExpired,
 			                 u_isAccountNonLocked    	    as isAccountNonLocked,
 			                 u_isCredentialNonExpired    as isCredentialsNonExpired,
 			                 u_isEnabled          				    as isEnabled,
-			                 u_datetime							as uDateTime
-      FROM         lc_user
+			                 u_datetime							as uDateTime,
+			                 u_auth								as uAuth
+      FROM         lc_user ta
+      JOIN		   lc_auth tb
+      ON			ta.u_id=tb.u_id 		
       WHERE         1=1
-      AND            u_id   =   #{username}
+      AND            ta.u_id  =  #{username}
    </select>
    
-   <select id="listUser" resultType="User"> <!--  as 부분은 user.java에 변수이름으로  -->
+   <select id="listUser" parameterType="int" resultType="User"> <!--  as 부분은 user.java에 변수이름으로  -->
      SELECT        	 ta.u_id                 						    as   username,
 		                 u_password             					as password,
 		                 u_name                						as   uName,
@@ -33,12 +36,15 @@
 		                 u_isCredentialNonExpired    as isCredentialsNonExpired,
 		                 u_isEnabled          				    as isEnabled,
 		                 u_datetime							as uDateTime,
-		                 u_auth								as uAuth
+		                 u_auth								as uAuth,
+		                 @ROWNUM:=@ROWNUM-1 AS ROWNUM
      FROM         lc_user ta
      JOIN		  lc_auth tb 
      ON			  ta.u_id=tb.u_id
+     INNER JOIN (SELECT @rownum := (SELECT	COUNT(*)-#{pageNum}+1 FROM lc_user )) tc ON 1=1
      WHERE 1=1
      ORDER BY uDateTime asc	
+     LIMIT			#{pageNum}, 5
    </select>
    
    <!-- 회원 등록 -->
@@ -80,5 +86,9 @@
          ON DUPLICATE KEY
          UPDATE
             u_id = #{username}
+    </insert>
+    
+    <insert id="countUser">
+    	SELECT COUNT(*) count FROM lc_user
     </insert>
 </mapper>

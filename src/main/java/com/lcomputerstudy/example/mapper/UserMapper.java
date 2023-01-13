@@ -20,9 +20,12 @@ public interface UserMapper {
 	   public void createAuthority(User user);
 	   
 	   //유저 리스트
-	   public List<User> listUser();
+	   public List<User> listUser(int pageNum);
 	   
 	   //유저 권한 변경 
 	   public void editAuthority(User user);
+	   
+	   //유저 카운트
+	   public int countUser();
 }
 

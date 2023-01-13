@@ -20,8 +20,12 @@ public interface UserService extends UserDetailsService{
 	   Collection<GrantedAuthority> getAuthorities(String username);
 	   
 	   // 유저 리스트 
-	   public List<User> selectUserList();
+	   public List<User> selectUserList(int pageNum);
 	   
-	   public void editAuthorities(User user); // 권한 변경 
-	
+	   //유저 권한 변경 
+	   public void editAuthorities(User user); 
+	   
+	   //유저 카운트 
+	   public int countUser();
+	   
 	}

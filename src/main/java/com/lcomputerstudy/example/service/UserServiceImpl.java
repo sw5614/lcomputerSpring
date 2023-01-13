@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
    }
 
 	@Override
-	public List<User> selectUserList() {
-		return userMapper.listUser();
+	public List<User> selectUserList(int pageNum) {
+		return userMapper.listUser(pageNum);
 	}
 
 	@Override
@@ -54,6 +54,12 @@ public class UserServiceImpl implements UserService {
 		userMapper.editAuthority(user);
 		
 	}
+
+	@Override
+	public int countUser() {
+		return userMapper.countUser();
+	}
+	
 	
 	
 
