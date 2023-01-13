@@ -42,11 +42,19 @@ sprint security
 
 
 1.스프링 이점 살려서 코딩 
+
 2.중복코드 메소드로 정리하기 
+
 3.예외처리 (view에서 warning 알림뜨게만들기 ) 
+
 4.기존 서블릿에서만든거 다시 만들기 
+
 -board list 진행중 
+
 -userlist 진행중
+
 -pagination  domain에서 만들어서 따로 관리 
+
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
+
  ㄴusername 클릭하면 사용자정보나 로그인후 화면 띄우기 
