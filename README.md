@@ -67,6 +67,7 @@ sprint security
 ㄴindex -> userlist defaulpage 어떻게 ? 
  
 
--login 세션값(username) 받아서 오른쪽위에 계속 띄우기 -- 완료 
+-login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
 
- ㄴusername 클릭하면 사용자정보나 로그인후 화면 띄우기  -- 완료 
+ ㄴusername 클릭하면 사용자정보 화면 띄우기  -- 완료 
+ ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 
