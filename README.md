@@ -37,3 +37,37 @@ mybatis를 사용하는 이유
 aop filter interceptor
 
 sprint security
+
+
+
+
+
+ 
+ 
+
+1.스프링 이점 살려서 코딩 
+
+2.중복코드 메소드로 정리하기 
+
+3.예외처리 (view에서 warning 알림뜨게만들기 ) 
+
+4.기존 서블릿에서만든거 다시 만들기 
+
+-board list 진행중 
+
+-userlist 진행중
+ㄴ유저 id 클릭시 개인정보 출력 -- 완료 
+
+-pagination  domain에서 만들어서 따로 관리 
+
+ㄴ default 페이지 설정 ? ajax랑 충돌 
+
+ㄴuserpagination 진행중 
+
+ㄴindex -> userlist defaulpage 어떻게 ? 
+ 
+
+-login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
+
+ ㄴusername 클릭하면 사용자정보 화면 띄우기  -- 완료 
+ ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 
