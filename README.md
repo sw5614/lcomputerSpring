@@ -60,11 +60,9 @@ sprint security
 
 -pagination  domain에서 만들어서 따로 관리 
 
-ㄴ default 페이지 설정 ? ajax랑 충돌 
+ㄴuserpagination 완료 
 
-ㄴuserpagination 진행중 
-
-ㄴindex -> userlist defaulpage 어떻게 ? 
+ㄴuseredit sql 오류 
  
 
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
