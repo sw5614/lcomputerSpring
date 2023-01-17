@@ -42,11 +42,16 @@
 			     </tr>
 			</c:forEach>
 		</table>
-						<ul>
+				<ul>
 			 <c:choose>    <%--switch 문  --%>
-				<c:when test="${ pagination.prevPage >= 0}">   <!-- case 문  test 에는 조건// 페이지가 5보다크거나 같으면 ◀ 버튼 --> 
-					<li>
-						<a href="user-list.do?page=${pagination.prevPage}">   <!--  이전 페이지로  -->
+				<c:when test="${ pagination.prevPage < 5 }">
+					<li style="display:none;">
+						<span>◀</span>
+					</li>
+				</c:when>
+				<c:when test="${pagination.prevPage >= 5}">   <!-- case 문  test 에는 조건// 페이지가 5보다크거나 같으면 ◀ 버튼 --> 
+					<li> 
+						<a href="/user/list?page=${pagination.prevPage}">   <!--  이전 페이지로  -->
 							◀
 						</a>
 					</li>
@@ -61,7 +66,7 @@
 						</c:when>
 						<c:when test="${ pagination.page != i }">    <!--  누르려는 페이지값이  다른페이지면 링크띄움  -->
 							<li>
-								<a href="user-list.do?page=${i}">${i}</a>
+								<a href="/user/list?page=${i}">${i}</a>
 							</li>
 						</c:when>
 					</c:choose> <%-- 두번쨰 switch 문 닫고 --%>
@@ -69,7 +74,7 @@
 			 <c:choose>  	<%--swtich--%>
 				<c:when test="${ pagination.nextPage < pagination.lastPage }"> <!-- nextpage 남아있으면 ? -->
 					<li style="">
-						<a href="user-list.do?page=${pagination.nextPage}"> <!-- nextpage 로 가는 버튼 생성   -->
+						<a href="/user/list?page=${pagination.nextPage}"> <!-- nextpage 로 가는 버튼 생성   -->
 						▶</a>
 					</li>
 				</c:when>

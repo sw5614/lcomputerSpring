@@ -2,7 +2,7 @@ package com.lcomputerstudy.example.domain;
 
 public class Pagination {
 	int count;       // user테이블에 등록 된 총 user 수
-	int page = 1;           // 현재 패이지번호
+	int page ;           // 현재 페이지번호
 	int pageNum;          // userCount / page = 화면에 나타 낼 user index번호
 	int startPage;     //﻿ pagination의 시작(ex,1,6,11)
 	int endPage;      // ﻿pagination의 끝(ex,5,10,15)

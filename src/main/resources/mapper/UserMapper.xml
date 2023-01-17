@@ -68,11 +68,11 @@
       )
    </insert>   
    
-   <insert id="editAuthority" parameterType="User">
-   	UPDATE lc_auth
-   	SET u_auth = #{uAuth}
-   	WHERE u_id=#{username}
-   </insert>   
+	<insert id="editAuthority" parameterType="User">
+	   	UPDATE lc_auth
+	   	SET u_auth = #{uAuth}
+	   	WHERE u_id=#{username}
+	</insert>   
    
     <!-- 유저 권한 추가 -->
     <insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
@@ -88,7 +88,19 @@
             u_id = #{username}
     </insert>
     
-    <insert id="countUser">
-    	SELECT COUNT(*) count FROM lc_user
-    </insert>
+    <select id="countUser" resultType="int">
+    	SELECT COUNT(*)  FROM lc_user
+    </select>
+    
+    <delete id="deleteUser">
+    	delete from lc_user where u_id=#{username}
+    </delete>
+	
+	<update id="editUser" parameterType="User">
+		UPDATE lc_user
+		SET u_name=#{uName},
+			u_password=#{password}
+		WHERE u_id=#{username}	
+	</update>
+	
 </mapper>

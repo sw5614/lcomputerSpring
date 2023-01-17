@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <style>
-	ul {
+ul {
 		width:600px;
 		height:50px;
 		margin:10px auto;
@@ -44,19 +44,19 @@
 	}
 	a {
 		text-decoration:none;
-		color:#0101DF;
+		color:#000;
 		font-weight:700;
 	}
-	
-	
 </style>
 <body>
+
 	<sec:authorize access="isAuthenticated()"> <!--  로그인했을때 (권한 상관없이 로그인 인증받았을때isAuthenticated()) -->
 	 <sec:authentication property="principal" var="user"/> <!--var이랑 값이랑 매칭 현재접속자의 정보  -->
 		<p align= "right" ><a href="/user/login_info" >${user.username}  </a>님 접속중</p> 
 	 </sec:authorize>
-	<h1>유저 목록</h1>
 	
+	<h1>유저 목록</h1>
+
 	<div id="user-list">
 		<table >
 		<colgroup>
@@ -91,12 +91,18 @@
 			     </tr>
 			</c:forEach>
 		</table>
-		
-				<ul>
+			
+
+		<ul>
 			 <c:choose>    <%--switch 문  --%>
-				<c:when test="${ pagination.prevPage >= 0}">   <!-- case 문  test 에는 조건// 페이지가 5보다크거나 같으면 ◀ 버튼 --> 
-					<li>
-						<a href="user-list.do?page=${pagination.prevPage}">   <!--  이전 페이지로  -->
+				<c:when test="${ pagination.prevPage < 5 }">
+					<li style="display:none;">
+						<span>◀</span>
+					</li>
+				</c:when>
+				<c:when test="${pagination.prevPage >= 5}">   <!-- case 문  test 에는 조건// 페이지가 5보다크거나 같으면 ◀ 버튼 --> 
+					<li> 
+						<a href="/user/list?page=${pagination.prevPage}">   <!--  이전 페이지로  -->
 							◀
 						</a>
 					</li>
@@ -106,12 +112,12 @@
 					<c:choose> <%-- 두번쨰 switch --%>
 						<c:when test="${ pagination.page == i }">      <!-- 누르려는 페이지값이 현재면 아무거도안함  -->
 							<li style="background-color:#ededed;">
-								<span id="currentPage" page="${i}">${i}</span>  <!-- ????  -->
+								<span id="currentPage" pageNo="${i}">${i}</span>  <!-- ????  -->
 							</li>
 						</c:when>
 						<c:when test="${ pagination.page != i }">    <!--  누르려는 페이지값이  다른페이지면 링크띄움  -->
 							<li>
-								<a href="user-list.do?page=${i}">${i}</a>
+								<a href="/user/list?page=${i}">${i}</a>
 							</li>
 						</c:when>
 					</c:choose> <%-- 두번쨰 switch 문 닫고 --%>
@@ -119,7 +125,7 @@
 			 <c:choose>  	<%--swtich--%>
 				<c:when test="${ pagination.nextPage < pagination.lastPage }"> <!-- nextpage 남아있으면 ? -->
 					<li style="">
-						<a href="user-list.do?page=${pagination.nextPage}"> <!-- nextpage 로 가는 버튼 생성   -->
+						<a href="/user/list?page=${pagination.nextPage}"> <!-- nextpage 로 가는 버튼 생성   -->
 						▶</a>
 					</li>
 				</c:when>
@@ -127,18 +133,17 @@
 		</ul>
 	</div>
 
-	<a href="/" style="width: 70%; font-size:2em; font-weight: 900; background-color: blue; color: #fff;">홈 화면으로</a> 
-<script>
 
+<script>
 $(document).on('click', '.adminLevel' , function () { // 관리자권한추가 
 	let username =$(this).attr('username');
 	let u_auth=$(this).attr('u_auth');
-	<%--let pageNo = $('#currentPage').attr('pageNo');--%>
+	let pageNo = $('#currentPage').attr('pageNo');
 	
 $.ajax({
 	  method: "POST",
 	  url: "/user/authEdit",
-	  data: { username:username, uAuth:u_auth}
+	  data: { username:username, uAuth:u_auth , page : pageNo}
 })
 .done(function( html ) {
     $('#user-list').html(html);
@@ -147,12 +152,12 @@ $.ajax({
 $(document).on('click', '.normalLevel' , function () { // 일반권한추가 
 	let username =$(this).attr('username');
 	let u_auth=$(this).attr('u_auth');
-	<%--let pageNo = $('#currentPage').attr('pageNo'); --%>
+	let pageNo = $('#currentPage').attr('pageNo');
 	
 $.ajax({
 	  method: "POST",
 	  url: "/user/authEdit",
-	  data: { username:username, uAuth:u_auth}
+	  data: { username:username, uAuth:u_auth,page : pageNo}
 })
 .done(function( html ) {
     $('#user-list').html(html);
@@ -160,6 +165,6 @@ $.ajax({
 });
 
 </script>	
-	
+		<a href="/" style="width: 70%; font-size:2em; font-weight: 900; background-color: blue; color: #fff;">홈 화면으로</a> 
 </body>
 </html>

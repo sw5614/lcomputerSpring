@@ -16,7 +16,7 @@
               <h2>${principal.uName} 접속중 </h2>   
  			  <a href="/logout">로그아웃</a>
  			  <a href="/board/list">게시판</a>
- 			  <a href="/user/list?page=1">회원목록</a>
+ 			  <a href="/user/list">회원목록</a>
             </sec:authorize>
            <sec:authorize access="isAnonymous()"> <!--로그인하지 않았을때 ( 권한없는 익명사용자일경우 isAnonymous()  ) -->
               <a href="/login">로그인</a>

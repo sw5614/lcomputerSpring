@@ -27,5 +27,11 @@ public interface UserService extends UserDetailsService{
 	   
 	   //유저 카운트 
 	   public int countUser();
+
+	   //유저 삭제 
+	   public void deleteUser(User user);
+
+	   //유저 수정
+	   public void editUser(User user);
 	   
 	}

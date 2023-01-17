@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.lcomputerstudy.example.domain.Board;
 import com.lcomputerstudy.example.domain.Pagination;
 import com.lcomputerstudy.example.domain.User;
@@ -22,8 +24,16 @@ public class Controller {
 	@Autowired UserService userservice;
 	@Autowired BoardService boardservice;
 	@Autowired PasswordEncoder encoder;
-	int pageNum=1;
-	int recPage=1; // 디폴트 페이지 
+	
+	public Pagination setPagination(int page) { // 페이지네이션 설정메소드 
+		Pagination pagination = new Pagination();
+		pagination.setCount(userservice.countUser());
+		pagination.setPage(page);
+		pagination.init();
+		return pagination;
+	}
+	int defaultPage=1; // 기폰페이지 1 로 
+
 	
 	
 	@RequestMapping("/")
@@ -91,30 +101,19 @@ public class Controller {
 	  return "/board_list";
    }
    @RequestMapping(value="/user/list")
-   public String userList(Model model,int page){ // 게시물 목록 
-	  page=recPage;
-	  pageNum =(page-1)*5;
-	  Pagination pagination = new Pagination();
-	  pagination.setCount(userservice.countUser());
-	  pagination.setPage(pageNum);
-	  pagination.init();
-	   List<User> list = userservice.selectUserList(pageNum);  
+   public String userList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
+	  List<User> list = userservice.selectUserList(page);  
 	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",pagination);
+	  model.addAttribute("pagination",setPagination(page));
 	  return "/user_list";
 	   }
    
    @RequestMapping(value="/user/authEdit") 
-   public String editUserAuth(Model model,User user,int page){ // 사용자 권한 설정  
-	  pageNum =(page-1)*5;
-	  Pagination pagination = new Pagination();
-	  pagination.setCount(userservice.countUser());
-	  pagination.setPage(pageNum);
-	  pagination.init();
+   public String editUserAuth(Model model,User user,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 사용자 권한 설정  
 	  userservice.editAuthorities(user);
-	  List<User> list = userservice.selectUserList(pageNum);  
+	  List<User> list = userservice.selectUserList(page); // ajax 때문에 list 보내줘야함   
+	  model.addAttribute("pagination",setPagination(page));
 	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",pagination);
 	  return "/aj_user_list";
 	   }
    @RequestMapping(value="/user/info") 
@@ -122,6 +121,27 @@ public class Controller {
       model.addAttribute("user",userservice.readUser(username) );
 	  return "/user_info";
    }
-
+   @RequestMapping(value="/user/delete")
+   public String deleteUser(Model model, User user) {
+	   userservice.deleteUser(user);
+	   List<User> list = userservice.selectUserList(defaultPage);
+	   model.addAttribute("list", list);  
+	   model.addAttribute("pagination",setPagination(defaultPage));
+	   return "/user_list";
+   }
+   
+   @RequestMapping(value="/user/edit")
+   public String editUser(Model model, User user) {
+	   userservice.editUser(user);
+	   model.addAttribute("user",userservice.readUser(user.getUsername()) );
+	   return "/user_info";
+   }
+   
+   @RequestMapping(value="/user/beforeedit")
+   public String editUserbefore(Model model, String username ) {
+	   model.addAttribute("user",userservice.readUser(username));
+	   return "/user_edit";
+   }
+   
 }
 
