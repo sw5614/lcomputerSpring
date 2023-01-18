@@ -6,6 +6,9 @@ public class Board {
 	private String bContent;
 	private String bWriter;
 	private String bDateTime;
+	private int bGroup;
+	private int bOder;
+	private int bDepth;
 	
 	
 	public int getbId() {
@@ -38,4 +41,26 @@ public class Board {
 	public void setbDateTime(String bDateTime) {
 		this.bDateTime = bDateTime;
 	}
+	public int getbGroup() {
+		return bGroup;
+	}
+	public void setbGroup(int bGroup) {
+		this.bGroup = bGroup;
+	}
+	public int getbOder() {
+		return bOder;
+	}
+	public void setbOder(int bOder) {
+		this.bOder = bOder;
+	}
+	public int getbDepth() {
+		return bDepth;
+	}
+	public void setbDepth(int bDepth) {
+		this.bDepth = bDepth;
+	}
+	
+	
+	
+	
 }

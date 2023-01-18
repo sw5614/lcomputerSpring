@@ -132,16 +132,28 @@ public class Controller {
    
    @RequestMapping(value="/user/edit")
    public String editUser(Model model, User user) {
+       String encodedPassword = encoder.encode(user.getPassword()); //비밀번호 암호화 
+       user.setPassword(encodedPassword); 
 	   userservice.editUser(user);
 	   model.addAttribute("user",userservice.readUser(user.getUsername()) );
 	   return "/user_info";
    }
    
-   @RequestMapping(value="/user/beforeedit")
+   @RequestMapping(value="/user/beforeedit") // 수정전 화면 
    public String editUserbefore(Model model, String username ) {
 	   model.addAttribute("user",userservice.readUser(username));
 	   return "/user_edit";
    }
    
+   @RequestMapping(value="/board/beforewrite")
+   public String writeBoardbefore(Model model) {
+	   return "/board_write";
+   }
+   
+   @RequestMapping(value="/board/write")
+   public String writeBoard(Model model,Board board) {
+	  boardservice.writeBoard(board);
+	   return "/board_list"; // 나중에 info로 변경 
+   }
 }
 

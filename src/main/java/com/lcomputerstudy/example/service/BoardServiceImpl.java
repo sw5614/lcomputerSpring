@@ -13,6 +13,11 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> selectBoardList() {
 		return boardmapper.selectBoardList();
 	}
-
+	@Override
+	public void writeBoard(Board board) {
+		boardmapper.writeBoard(board);
+	}
+	
+	
 }
 

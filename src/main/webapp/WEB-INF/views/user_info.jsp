@@ -17,7 +17,7 @@
                <h2> 가입날짜 : ${user.uDateTime}</h2>
                <h2> 권한 : ${user.uAuth}</h2>
                
-           <a href="/">돌아가기</a>
+           <a href="/user/list">돌아가기</a>
            <a href="/user/delete?username=${user.username}">삭제</a>
            <a href="/user/beforeedit?username=${user.username}">수정</a>
         </div>

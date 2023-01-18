@@ -9,5 +9,24 @@
 				                 b_datetime as bDateTime
 	      FROM            lc_board
 	   </select>
+	 
+	 <insert id="writeBoard" parameterType="Board">
+	 	INSERT INTO lc_board(
+	 		b_title,
+	 		b_content,
+	 		b_writer
+	 	)VALUES(
+	 		#{bTitle},
+	 		#{bContent},
+	 		#{bWriter}
+	 	)
+	 	<selectKey keyProperty="b_idx" resultType="int" >
+  			UPDATE lc_board SET b_group=LAST_INSERT_ID() WHERE b_id=LAST_INSERT_ID()
+		</selectKey>
+	 	
+	 	
+	 	 <!--  my batis last_insert_id , selectkey기능 쓰기  -->
+	 </insert>  
+	   
 </mapper>
 
