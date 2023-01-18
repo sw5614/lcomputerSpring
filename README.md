@@ -53,16 +53,13 @@ sprint security
 
 4.기존 서블릿에서만든거 다시 만들기 
 
--board list 진행중 
+-board list 진행중
 
--userlist 진행중
-ㄴ유저 id 클릭시 개인정보 출력 -- 완료 
-
--pagination  domain에서 만들어서 따로 관리 
+-userList 완료 
 
 ㄴuserpagination 완료 
 
-ㄴuseredit sql 오류 
+ㄴ회원수정,가입,삭제,조회,권한처리 완료 
  
 
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
