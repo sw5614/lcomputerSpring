@@ -59,7 +59,7 @@ sprint security
 
 ㄴuserpagination 완료 
 
-ㄴ회원수정,가입,삭제,조회,권한처리 완료 
+ㄴ회원수정,가입,삭제,조회,권한처리 완료 (01/18 완료 //페이지접근권한 및 warning메세지  마지막에 )
  
 
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
