@@ -53,9 +53,13 @@ sprint security
 
 4.기존 서블릿에서만든거 다시 만들기 
 
--board list 진행중
+-board list 
 
--userList 완료 
+ㄴ수정,삭제,목록 완료 01/19
+
+ㄴ답글 진행중 
+
+-userList 완료 01/18
 
 ㄴuserpagination 완료 
 
