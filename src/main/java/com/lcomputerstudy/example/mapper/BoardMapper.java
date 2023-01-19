@@ -6,8 +6,25 @@ import com.lcomputerstudy.example.domain.Board;
 
 @Mapper
 public interface BoardMapper {
-	public List<Board> selectBoardList();
+	public List<Board> selectBoardList(int page);
 
-	public void writeBoard(Board board); 
+	public void writeBoard(Board board);
+
+	public void setGroup(Board board);
+
+	public Board readBoard(Board board);
+
+	public int countBoard();
+
+	public void editBoard(Board board);
+
+	public void deleteBoard(Board board);
+
+	public void replyBoard(Board board);
+
+	public void setReply(Board board); 
+	
+	
+	
 }
 

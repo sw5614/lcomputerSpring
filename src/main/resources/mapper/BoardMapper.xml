@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lcomputerstudy.example.mapper.BoardMapper">
-	<select id="selectBoardList" resultType="Board">
-	      SELECT         b_id as bId,
+	
+	
+	<select id="selectBoardList" parameterType="int" resultType="Board">
+	      SELECT 		         b_id as bId,
 				                 b_title as bTitle,
 				                 b_content as bContent,
 				                 b_writer as bWriter,
-				                 b_datetime as bDateTime
-	      FROM            lc_board
+				                 b_datetime as bDateTime,
+				                 @ROWNUM:=@ROWNUM-1 AS ROWNUM
+	      FROM            lc_board ta
+		  INNER JOIN (SELECT @rownum := (SELECT	COUNT(*)-#{pageNum}+1 FROM lc_board )) tc ON 1=1
+		  WHERE 1=1
+		  ORDER BY bDateTime desc	
+     	  LIMIT			#{pageNum}, 5	
 	   </select>
 	 
 	 <insert id="writeBoard" parameterType="Board">
@@ -20,13 +27,63 @@
 	 		#{bContent},
 	 		#{bWriter}
 	 	)
-	 	<selectKey keyProperty="b_idx" resultType="int" >
-  			UPDATE lc_board SET b_group=LAST_INSERT_ID() WHERE b_id=LAST_INSERT_ID()
-		</selectKey>
 	 	
-	 	
-	 	 <!--  my batis last_insert_id , selectkey기능 쓰기  -->
+			 <selectKey keyProperty="bId" resultType="Board"> 
+			  	  SELECT       b_id					as bId 
+			      FROM         lc_board 
+			      WHERE        b_id=LAST_INSERT_ID()
+			</selectKey>
+			 	
 	 </insert>  
-	   
-</mapper>
 
+	
+	 <update id="setGroup" parameterType="Board"> 
+	 UPDATE lc_board SET b_group=LAST_INSERT_ID() WHERE b_id=LAST_INSERT_ID()
+	 </update>	
+	 
+	 <select id="readBoard"  parameterType="Board"  resultType="Board">
+ 	 
+ 	  SELECT       b_id					as bId ,
+ 	  			   b_title				as bTitle,
+ 				   b_content	  		as bContent,
+ 				   b_writer				as bWriter,
+ 				   b_datetime 			as bDateTime
+ 				   
+      FROM         lc_board 
+      WHERE       	b_id=#{bId}
+   </select>
+	
+	 <select id="countBoard" resultType="int">
+    	SELECT COUNT(*)  FROM lc_board
+	</select>	
+	
+	<update id="editBoard" parameterType="Board">
+		UPDATE lc_board
+		SET b_title=#{bTitle},
+			b_content=#{bContent}
+		WHERE b_id=#{bId}	
+	</update>
+	
+    <delete id="deleteBoard">
+    	delete from lc_board where b_id=#{bId}
+    </delete>   
+    
+     <insert id="replyBoard" parameterType="Board">
+	 	INSERT INTO lc_board(
+	 		b_title,
+	 		b_content,
+	 		b_writer,
+	 		b_group,
+	 		b_order,
+	 		b_depth
+	 	)VALUES(
+	 		#{bTitle},
+	 		#{bContent},
+	 		#{bWriter},
+	 		#{bGroup},
+	 		#{bOrder+1},
+	 		#{bDepth+1}
+	 	)
+    </insert>
+	
+</mapper>

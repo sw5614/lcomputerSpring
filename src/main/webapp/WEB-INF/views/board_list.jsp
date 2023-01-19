@@ -9,6 +9,21 @@
 <title>게시판</title>
 </head>
 <style>
+	ul {
+		width:600px;
+		height:50px;
+		margin:10px auto;
+	}
+	li {
+		list-style:none;
+		width:50px;
+		line-height:50px;
+		border:1px solid #ededed;
+		float:left;
+		text-align:center;
+		margin:0 5px;
+		border-radius:5px;
+	}
     h1 {
 		text-align:center;
 	}
@@ -27,7 +42,7 @@
 	
 	a {
 		text-decoration:none;
-		color:#F4FFFF;
+		color:#000;
 		font-weight:700;
 	}
 	
@@ -56,13 +71,51 @@
 		<c:forEach items="${list}" var="item">
 			 <tr>
 				<td align="center">${item.bId}</td>
-				<td >${item.bTitle}</td>
-				<td >${item.bWriter}</td>
+				<td><a href="/board/info?bId=${item.bId}" >${item.bTitle}</a></td>
+				<td>${item.bWriter}</td>
 				<td>${item.bDateTime}</td>
 		     <tr>
 		</c:forEach>
 	</table>
-	
+			<ul>
+			 <c:choose>    <%--switch 문  --%>
+				<c:when test="${ pagination.prevPage < 1 }">
+					<li style="display:none;">
+						<span>◀</span>
+					</li>
+				</c:when>
+				<c:when test="${pagination.prevPage >= 1}">   <!-- case 문  test 에는 조건// 페이지가 5보다크거나 같으면 ◀ 버튼 --> 
+					<li> 
+						<a href="/board/list?page=${pagination.prevPage}">   <!--  이전 페이지로  -->
+							◀
+						</a>
+					</li>
+				</c:when>
+			</c:choose>    <%--switch 문 닫고  --%>
+			<c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}" step="1"> <!-- var= 조건결과 저장할변수, step = 증가분 ("1"씩증가) --> 
+					<c:choose> <%-- 두번쨰 switch --%>
+						<c:when test="${ pagination.page == i }">      <!-- 누르려는 페이지값이 현재면 아무거도안함  -->
+							<li style="background-color:#ededed;">
+								<span id="currentPage" pageNo="${i}">${i}</span>  <!-- ????  -->
+							</li>
+						</c:when>
+						<c:when test="${ pagination.page != i }">    <!--  누르려는 페이지값이  다른페이지면 링크띄움  -->
+							<li>
+								<a href="/board/list?page=${i}">${i}</a>
+							</li>
+						</c:when>
+					</c:choose> <%-- 두번쨰 switch 문 닫고 --%>
+			</c:forEach>  <!-- 반복문 끝  -->
+			 <c:choose>  	<%--swtich--%>
+				<c:when test="${ pagination.nextPage < pagination.lastPage }"> <!-- nextpage 남아있으면 ? -->
+					<li style="">
+						<a href="/board/list?page=${pagination.nextPage}"> <!-- nextpage 로 가는 버튼 생성   -->
+						▶</a>
+					</li>
+				</c:when>
+			</c:choose> 
+		</ul>
+		
 	<b><a href="/board/beforewrite"> 글작성 </a></b>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<b><a href="/"> 홈화면 </a></b>

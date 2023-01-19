@@ -25,9 +25,16 @@ public class Controller {
 	@Autowired BoardService boardservice;
 	@Autowired PasswordEncoder encoder;
 	
-	public Pagination setPagination(int page) { // 페이지네이션 설정메소드 
+	public Pagination setPaginationUser(int page) { // 페이지네이션 설정메소드 
 		Pagination pagination = new Pagination();
 		pagination.setCount(userservice.countUser());
+		pagination.setPage(page);
+		pagination.init();
+		return pagination;
+	}
+	public Pagination setPaginationBoard(int page) { // 페이지네이션 설정메소드  // 나중에 합쳐서 객체만넣어서 설정 수정##필수
+		Pagination pagination = new Pagination();
+		pagination.setCount(boardservice.countBoard());
 		pagination.setPage(page);
 		pagination.init();
 		return pagination;
@@ -38,9 +45,7 @@ public class Controller {
 	
 	@RequestMapping("/")
 	public String home(Model model) { //Model은 스프링 기능, key와 value로 이루어져있는 HashMap
-		
-		List<Board> list = boardservice.selectBoardList();  
-		model.addAttribute("list", list);  // Model 객체 (request.setAttribute() 와 비슷한역할)
+										// Model 객체 (request.setAttribute() 와 비슷한역할)
 		logger.debug("debug");
 	     logger.info("info");
 	     logger.error("error");
@@ -95,16 +100,17 @@ public class Controller {
    }
    
    @RequestMapping(value="/board/list")
-   public String boardList(Model model){ // 게시물 목록 
-	  List<Board> list = boardservice.selectBoardList();  
+   public String boardList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
+	  List<Board> list = boardservice.selectBoardList(page);  
 	  model.addAttribute("list", list);  
+	  model.addAttribute("pagination",setPaginationBoard(page));
 	  return "/board_list";
    }
    @RequestMapping(value="/user/list")
    public String userList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
 	  List<User> list = userservice.selectUserList(page);  
 	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",setPagination(page));
+	  model.addAttribute("pagination",setPaginationUser(page));
 	  return "/user_list";
 	   }
    
@@ -112,7 +118,7 @@ public class Controller {
    public String editUserAuth(Model model,User user,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 사용자 권한 설정  
 	  userservice.editAuthorities(user);
 	  List<User> list = userservice.selectUserList(page); // ajax 때문에 list 보내줘야함   
-	  model.addAttribute("pagination",setPagination(page));
+	  model.addAttribute("pagination",setPaginationUser(page));
 	  model.addAttribute("list", list);  
 	  return "/aj_user_list";
 	   }
@@ -124,10 +130,7 @@ public class Controller {
    @RequestMapping(value="/user/delete")
    public String deleteUser(Model model, User user) {
 	   userservice.deleteUser(user);
-	   List<User> list = userservice.selectUserList(defaultPage);
-	   model.addAttribute("list", list);  
-	   model.addAttribute("pagination",setPagination(defaultPage));
-	   return "/user_list";
+	   return "redirect:/user/list";
    }
    
    @RequestMapping(value="/user/edit")
@@ -152,8 +155,41 @@ public class Controller {
    
    @RequestMapping(value="/board/write")
    public String writeBoard(Model model,Board board) {
-	  boardservice.writeBoard(board);
-	   return "/board_list"; // 나중에 info로 변경 
+	   boardservice.writeBoard(board);
+	   model.addAttribute("board",boardservice.readBoard(board));
+	   return "/board_info"; // 나중에 info로 변경 
    }
+   
+   @RequestMapping(value="/board/info")
+   public String readBoard(Model model, Board board) {
+	   model.addAttribute("board",boardservice.readBoard(board));
+	   return "/board_info";
+   }
+   
+   @RequestMapping(value="/board/edit")
+   public String editBoard(Model model, Board board) {
+	   boardservice.editBoard(board);
+	   model.addAttribute("board",boardservice.readBoard(board));
+	   return "/board_info";
+   }
+   
+   @RequestMapping(value="/board/beforeedit") // 수정전 화면 
+   public String editBoardbefore(Model model, Board board ) {
+	   model.addAttribute("board",boardservice.readBoard(board));
+	   return "/board_edit";
+   }
+   
+   @RequestMapping(value="/board/delete") // 삭제 
+   public String deleteBoard(Model model, Board board ) {
+	   boardservice.deleteBoard(board);
+	   return "redirect:/board/list";  //  이전화면으로 리다이렉트 
+   }
+   
+   @RequestMapping(value="/board/reply") // 답글  
+   public String replyBoard(Model model, Board board ) {
+	   boardservice.replyBoard(board);
+	   return "/board_list";
+   }
+   
 }
 
