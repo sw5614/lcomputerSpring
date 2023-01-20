@@ -71,7 +71,11 @@
 		<c:forEach items="${list}" var="item">
 			 <tr>
 				<td align="center">${item.bId}</td>
-				<td><a href="/board/info?bId=${item.bId}" >${item.bTitle}</a></td>
+				<td><a href="/board/info?bId=${item.bId}" >
+				<c:forEach begin="1" end="${item.bDepth}" step="1">
+				<d style="color:red">RE</d>
+				</c:forEach>
+				${item.bTitle}</a></td>
 				<td>${item.bWriter}</td>
 				<td>${item.bDateTime}</td>
 		     <tr>

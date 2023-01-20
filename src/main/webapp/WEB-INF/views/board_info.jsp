@@ -88,5 +88,6 @@ a {
 	<a href="/board/beforeedit?bId=${board.bId}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
 	<a href="/board/delete?bId=${board.bId}"	style="width: 10%; font-weight: 700; background-color: red; color: #fff;">삭제</a>
 	<a href="/board/list" style="width: 10%; font-weight: 500; background-color: green; color: #fff;">목록</a>		
+	<a href="/board/beforereply?bId=${board.bId}&bGroup=${board.bGroup}&bOrder=${board.bOrder}&bDepth=${board.bDepth}"	style="width: 10%; font-weight: 500; background-color: blue; color: #fff;">답글</a>
 	</body>
 	</html>

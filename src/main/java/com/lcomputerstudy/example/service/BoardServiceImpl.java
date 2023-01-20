@@ -43,6 +43,10 @@ public class BoardServiceImpl implements BoardService {
 		
 	}
 	
+	@Override
+	public Board readReply(Board board) {
+		return boardmapper.readReply(board);
+	}
 	
 }
 

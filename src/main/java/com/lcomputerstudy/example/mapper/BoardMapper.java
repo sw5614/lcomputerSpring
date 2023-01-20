@@ -24,6 +24,7 @@ public interface BoardMapper {
 
 	public void setReply(Board board); 
 	
+	public Board readReply(Board board);
 	
 	
 }

@@ -58,7 +58,7 @@ public class Controller {
 	}
 	
 	@RequestMapping("/signup")
-	   public String signup(User user) {
+	  public String signup(User user) {
 	      //비밀번호 암호화
 	      String encodedPassword = encoder.encode(user.getPassword());
 	      
@@ -185,10 +185,16 @@ public class Controller {
 	   return "redirect:/board/list";  //  이전화면으로 리다이렉트 
    }
    
+   @RequestMapping(value="/board/beforereply") // 답글  
+   public String replyBoardbefore(Model model, Board board ) {
+	   model.addAttribute("board",boardservice.readBoard(board));
+	   return "/board_reply";  //  이전화면으로 리다이렉트 
+   }
+   
    @RequestMapping(value="/board/reply") // 답글  
    public String replyBoard(Model model, Board board ) {
 	   boardservice.replyBoard(board);
-	   return "/board_list";
+	   return "redirect:/board/list";  //  이전화면으로 리다이렉트 
    }
    
 }

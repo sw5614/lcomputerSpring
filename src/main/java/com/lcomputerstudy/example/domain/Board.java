@@ -7,7 +7,7 @@ public class Board {
 	private String bWriter;
 	private String bDateTime;
 	private int bGroup;
-	int bOder;
+	int bOrder;
 	int bDepth;
 	
 	
@@ -47,11 +47,11 @@ public class Board {
 	public void setbGroup(int bGroup) {
 		this.bGroup = bGroup;
 	}
-	public int getbOder() {
-		return bOder;
+	public int getbOrder() {
+		return bOrder;
 	}
-	public void setbOder(int bOder) {
-		this.bOder = bOder;
+	public void setbOrder(int bOder) {
+		this.bOrder = bOder;
 	}
 	public int getbDepth() {
 		return bDepth;
