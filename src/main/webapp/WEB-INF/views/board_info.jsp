@@ -89,5 +89,23 @@ a {
 	<a href="/board/delete?bId=${board.bId}"	style="width: 10%; font-weight: 700; background-color: red; color: #fff;">삭제</a>
 	<a href="/board/list" style="width: 10%; font-weight: 500; background-color: green; color: #fff;">목록</a>		
 	<a href="/board/beforereply?bId=${board.bId}&bGroup=${board.bGroup}&bOrder=${board.bOrder}&bDepth=${board.bDepth}"	style="width: 10%; font-weight: 500; background-color: blue; color: #fff;">답글</a>
+	
+	<br></br>
+   
+   
+
+    <br></br>
+    <sec:authorize access="isAuthenticated()">
+      <sec:authentication property="principal" var="user"/>  <!--현재접속자 정보 ( session 정보) -->
+        <p> 작성자 :<input type="hidden" name="cWriter" value="${user.username}" >${user.username}</p>
+    </sec:authorize>  
+     내용 : <textarea rows="1" cols="80" name="cContent"  ></textarea> 
+     
+    <p align="center"><input type="button" value="댓글올리기" class="btnCommentWrite" page="${pagination.page }"> </p> <!--  comment.c_writer --><!--  여기도 comment 객체 넘기기  -->
+    
+    <a href="#"></a>
+	
+	
+	
 	</body>
 	</html>

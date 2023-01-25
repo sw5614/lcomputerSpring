@@ -96,4 +96,7 @@
 		WHERE b_group = #{bGroup} and b_order>=#{bOrder} and b_id!=last_insert_id()
 	</update>
 	
+	
+	
+	
 </mapper>

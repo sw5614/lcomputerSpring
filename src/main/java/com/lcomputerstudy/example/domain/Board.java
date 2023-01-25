@@ -7,8 +7,8 @@ public class Board {
 	private String bWriter;
 	private String bDateTime;
 	private int bGroup;
-	int bOrder;
-	int bDepth;
+	private int bOrder;
+	private int bDepth;
 	
 	
 	public int getbId() {

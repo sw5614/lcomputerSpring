@@ -40,13 +40,8 @@ public class BoardServiceImpl implements BoardService {
 	public void replyBoard(Board board) {
 		boardmapper.replyBoard(board);
 		boardmapper.setReply(board);
-		
 	}
 	
-	@Override
-	public Board readReply(Board board) {
-		return boardmapper.readReply(board);
-	}
 	
 }
 

@@ -24,6 +24,7 @@ public interface BoardService {
 	//답글
 	public void replyBoard(Board board);
 
-	public Board readReply(Board board);
+
+
 }
 

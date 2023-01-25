@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lcomputerstudy.example.domain.Board;
+import com.lcomputerstudy.example.domain.Comment;
 import com.lcomputerstudy.example.domain.Pagination;
 import com.lcomputerstudy.example.domain.User;
 import com.lcomputerstudy.example.service.BoardService;
+import com.lcomputerstudy.example.service.CommentService;
 import com.lcomputerstudy.example.service.UserService;
 
 @org.springframework.stereotype.Controller
@@ -23,6 +25,7 @@ public class Controller {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired UserService userservice;
 	@Autowired BoardService boardservice;
+	@Autowired CommentService commentservice;
 	@Autowired PasswordEncoder encoder;
 	
 	public Pagination setPaginationUser(int page) { // 페이지네이션 설정메소드 
@@ -39,7 +42,7 @@ public class Controller {
 		pagination.init();
 		return pagination;
 	}
-	int defaultPage=1; // 기폰페이지 1 로 
+	
 
 	
 	
@@ -101,14 +104,15 @@ public class Controller {
    
    @RequestMapping(value="/board/list")
    public String boardList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
-	  List<Board> list = boardservice.selectBoardList(page);  
+	  List<Board> list = boardservice.selectBoardList((page-1)*5);  
 	  model.addAttribute("list", list);  
 	  model.addAttribute("pagination",setPaginationBoard(page));
 	  return "/board_list";
    }
+
    @RequestMapping(value="/user/list")
    public String userList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
-	  List<User> list = userservice.selectUserList(page);  
+	  List<User> list = userservice.selectUserList((page-1)*5);  
 	  model.addAttribute("list", list);  
 	  model.addAttribute("pagination",setPaginationUser(page));
 	  return "/user_list";
@@ -117,7 +121,7 @@ public class Controller {
    @RequestMapping(value="/user/authEdit") 
    public String editUserAuth(Model model,User user,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 사용자 권한 설정  
 	  userservice.editAuthorities(user);
-	  List<User> list = userservice.selectUserList(page); // ajax 때문에 list 보내줘야함   
+	  List<User> list = userservice.selectUserList((page-1)*5); // ajax 때문에 list 보내줘야함   
 	  model.addAttribute("pagination",setPaginationUser(page));
 	  model.addAttribute("list", list);  
 	  return "/aj_user_list";
@@ -196,6 +200,21 @@ public class Controller {
 	   boardservice.replyBoard(board);
 	   return "redirect:/board/list";  //  이전화면으로 리다이렉트 
    }
+   
+   @RequestMapping(value="/comment/list")
+   public String commentList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
+	  List<Comment> list = commentservice.selectCommentList((page-1)*5);  
+	  model.addAttribute("list", list);  
+	  model.addAttribute("pagination",setPaginationUser(page));
+	  return "/board_info";
+	   }
+   
+   @RequestMapping(value="/comment/write")
+   public String commentWrite(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page) {
+	   
+	   return "/board_info";
+   }
+   
    
 }
 
