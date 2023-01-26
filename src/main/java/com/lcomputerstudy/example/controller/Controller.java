@@ -42,7 +42,13 @@ public class Controller {
 		pagination.init();
 		return pagination;
 	}
-	
+	public Pagination setPaginationComment(int page) { // 페이지네이션 설정메소드  // 나중에 합쳐서 객체만넣어서 설정 수정##필수
+		Pagination pagination = new Pagination();
+		pagination.setCount(commentservice.countComment());
+		pagination.setPage(page);
+		pagination.init();
+		return pagination;
+	}
 
 	
 	
@@ -160,13 +166,17 @@ public class Controller {
    @RequestMapping(value="/board/write")
    public String writeBoard(Model model,Board board) {
 	   boardservice.writeBoard(board);
+	   
 	   model.addAttribute("board",boardservice.readBoard(board));
 	   return "/board_info"; // 나중에 info로 변경 
    }
    
    @RequestMapping(value="/board/info")
-   public String readBoard(Model model, Board board) {
-	   model.addAttribute("board",boardservice.readBoard(board));
+   public String readBoard(Model model, Board board, @RequestParam(value="page", required=false, defaultValue="1") int page) {
+       model.addAttribute("board",boardservice.readBoard(board));
+	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
+	   model.addAttribute("list", list);  
+	   model.addAttribute("pagination",setPaginationComment(page));
 	   return "/board_info";
    }
    
@@ -201,19 +211,50 @@ public class Controller {
 	   return "redirect:/board/list";  //  이전화면으로 리다이렉트 
    }
    
-   @RequestMapping(value="/comment/list")
-   public String commentList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
-	  List<Comment> list = commentservice.selectCommentList((page-1)*5);  
+   @RequestMapping(value="/comment/comment_list")
+   public String commentList(Model model,Board board,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
+	  List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",setPaginationUser(page));
-	  return "/board_info";
+	  model.addAttribute("pagination",setPaginationComment(page));
+	  return "/aj_comment_list";
 	   }
    
    @RequestMapping(value="/comment/write")
-   public String commentWrite(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page) {
-	   
-	   return "/board_info";
+   public String commentWrite(Model model,Comment comment,Board board,@RequestParam(value="page", required=false, defaultValue="1") int page) {
+	   commentservice.writeComment(comment);
+	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
+	   model.addAttribute("list", list);  
+	   model.addAttribute("pagination",setPaginationComment(page));
+	   return "/aj_comment_list";
    }
+   
+   @RequestMapping(value="/comment/edit")
+   public String commentEdit(Model model,Comment comment,Board board,@RequestParam(value="page", required=false, defaultValue="1") int page) {
+	   commentservice.editComment(comment);
+	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
+	   model.addAttribute("list", list);  
+	   model.addAttribute("pagination",setPaginationComment(page));
+	   return "/aj_comment_list";
+   }
+   
+   @RequestMapping(value="/comment/delete")
+   public String commentDelete(Model model,Comment comment,Board board,@RequestParam(value="page", required=false, defaultValue="1") int page) {
+	   commentservice.deleteComment(comment);
+	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
+	   model.addAttribute("list", list);  
+	   model.addAttribute("pagination",setPaginationComment(page));
+	   return "/aj_comment_list";
+   }
+   
+   @RequestMapping(value="/comment/reply")
+   public String commentReply(Model model,Comment comment,Board board,@RequestParam(value="page", required=false, defaultValue="1") int page) {
+	   commentservice.replyComment(comment);
+	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
+	   model.addAttribute("list", list);  
+	   model.addAttribute("pagination",setPaginationComment(page));
+	   return "/aj_comment_list";
+   }
+   
    
    
 }

@@ -9,7 +9,7 @@ public class Comment {
 	private int cOrder;
 	private int cDepth;
 	private int bId;
-	private int uId;
+	private String username;
 	
 	public int getcId() {
 		return cId;
@@ -59,12 +59,13 @@ public class Comment {
 	public void setbId(int bId) {
 		this.bId = bId;
 	}
-	public int getuId() {
-		return uId;
+	public String getUsername() {
+		return username;
 	}
-	public void setuId(int uId) {
-		this.uId = uId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 	
 	
 }

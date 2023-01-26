@@ -3,17 +3,20 @@
 <mapper namespace="com.lcomputerstudy.example.mapper.CommentMapper">
     
     
-    <select id="selectCommentList" parameterType="int" resultType="Comment">
-          SELECT                 c_id as bId,
+    <select id="selectCommentList"  resultType="Comment">
+          SELECT                 c_id as cId,
                                  c_content as cContent,
                                  c_writer as cWriter,
                                  c_datetime as cDateTime,
                                  c_depth    as cDepth,
+                                 c_group	as cGroup,
+                                 c_order	as cOrder,
+                                 c_depth	as cDepth,
                                  @ROWNUM:=@ROWNUM-1 AS ROWNUM
           FROM            lc_comment ta
           INNER JOIN (SELECT @rownum := (SELECT COUNT(*)-#{pageNum}+1 FROM lc_comment )) tc ON 1=1
-          WHERE b_id = #{bId}
-          ORDER BY b_group desc, b_order asc, b_depth asc   
+          WHERE b_id = #{board.bId}
+          ORDER BY c_group desc, c_order asc, c_depth asc   
           LIMIT         #{pageNum}, 5   
        </select>
      
@@ -26,8 +29,8 @@
         )VALUES(
             #{cContent},
             #{cWriter},
-            #{b_id},
-            #{u_id}
+            #{bId},
+            #{username}
         )
         
              <selectKey keyProperty="cId" resultType="Comment"> 
@@ -43,60 +46,43 @@
      UPDATE lc_comment SET c_group=LAST_INSERT_ID() WHERE c_id=LAST_INSERT_ID()
      </update>  
      
-     <select id="readComment"  parameterType="Comment"  resultType="Comment">
-     
-      SELECT       b_id                 as bId ,
-                   b_title              as bTitle,
-                   b_content            as bContent,
-                   b_writer             as bWriter,
-                   b_datetime           as bDateTime,
-                   b_group              as bGroup,
-                   b_order              as bOrder,
-                   b_depth              as bDepth
-                   
-      FROM         lc_comment 
-      WHERE         b_id=#{bId}
-   </select>
-    
      <select id="countComment" resultType="int">
         SELECT COUNT(*)  FROM lc_comment
     </select>   
     
     <update id="editComment" parameterType="Comment">
         UPDATE lc_comment
-        SET b_title=#{bTitle},
-            b_content=#{bContent}
-        WHERE b_id=#{bId}   
+        SET c_content=#{cContent}
+        WHERE c_id=#{cId}   
     </update>
     
     <delete id="deleteComment">
-        delete from lc_comment where b_id=#{bId}
+        delete from lc_comment where c_id=#{cId}
     </delete>   
     
      <insert id="replyComment" parameterType="Comment">
         INSERT INTO lc_comment(
-            b_title,
-            b_content,
-            b_writer,
-            b_group,
-            b_order,
-            b_depth
+            c_content,
+            c_writer,
+            c_group,
+            c_order,
+            c_depth,
+            b_id
         )VALUES(
-            #{bTitle},
-            #{bContent},
-            #{bWriter},
-            #{bGroup},
-            #{bOrder}+1,
-            #{bDepth}+1
+            #{cContent},
+            #{cWriter},
+            #{cGroup},
+            #{cOrder}+1,
+            #{cDepth}+1,
+            #{bId}
         )
     </insert>
     
     <update id="setReply" parameterType="Comment">
         UPDATE lc_comment 
-        SET b_order=b_order+1 
-        WHERE b_group = #{bGroup} and b_order>=#{bOrder} and b_id!=last_insert_id()
+        SET c_order=c_order+1 
+        WHERE c_group = #{cGroup} and c_order>=#{cOrder} and c_id!=last_insert_id()
     </update>
-    
     
     
     

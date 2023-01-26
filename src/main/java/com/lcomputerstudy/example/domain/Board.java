@@ -9,6 +9,7 @@ public class Board {
 	private int bGroup;
 	private int bOrder;
 	private int bDepth;
+	private String fName;
 	
 	
 	public int getbId() {
@@ -59,8 +60,11 @@ public class Board {
 	public void setbDepth(int bDepth) {
 		this.bDepth = bDepth;
 	}
-	
-	
-	
+	public String getfName() {
+		return fName;
+	}
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
 	
 }
