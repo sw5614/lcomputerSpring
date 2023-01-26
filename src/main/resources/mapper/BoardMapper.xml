@@ -95,7 +95,37 @@
 		SET b_order=b_order+1 
 		WHERE b_group = #{bGroup} and b_order>=#{bOrder} and b_id!=last_insert_id()
 	</update>
-	
+
+    <select id="searchBoardList"  resultType="Board">
+          SELECT                 b_id as bId,
+                                 b_title as bTitle,
+                                 b_content as bContent,
+                                 b_writer as bWriter,
+                                 b_datetime as bDateTime,
+                                 b_depth    as bDepth,
+                                 @ROWNUM:=@ROWNUM-1 AS ROWNUM
+          FROM            lc_board ta
+          INNER JOIN (SELECT @rownum := (SELECT COUNT(*)-#{pageNum}+1 FROM lc_board )) tc ON 1=1
+         
+          <where>
+            <if test="search.select == ''">
+                1=1
+            </if>
+            <if test="search.select == 'b_title'">
+                b_title like '%${search.keyword}%'
+            </if>
+            <if test="search.select == 'b_content'">
+                b_title like '%${search.keyword}%'
+                OR b_content like '%${search.keyword}%'
+            </if>
+            <if test="search.select == 'b_writer'">
+                b_writer like '%${search.keyword}%'
+            </if>
+        </where>
+        
+          ORDER BY b_group desc, b_order asc, b_depth asc   
+          LIMIT         #{pageNum}, 5   
+       </select>	
 	
 	
 	

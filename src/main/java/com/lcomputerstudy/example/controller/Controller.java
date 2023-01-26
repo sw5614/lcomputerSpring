@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.lcomputerstudy.example.domain.Board;
 import com.lcomputerstudy.example.domain.Comment;
 import com.lcomputerstudy.example.domain.Pagination;
+import com.lcomputerstudy.example.domain.Search;
 import com.lcomputerstudy.example.domain.User;
 import com.lcomputerstudy.example.service.BoardService;
 import com.lcomputerstudy.example.service.CommentService;
@@ -109,8 +110,8 @@ public class Controller {
    }
    
    @RequestMapping(value="/board/list")
-   public String boardList(Model model,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
-	  List<Board> list = boardservice.selectBoardList((page-1)*5);  
+   public String boardList(Model model,Search search,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
+	  List<Board> list = boardservice.searchBoardList(search,(page-1)*5);  
 	  model.addAttribute("list", list);  
 	  model.addAttribute("pagination",setPaginationBoard(page));
 	  return "/board_list";
@@ -255,7 +256,13 @@ public class Controller {
 	   return "/aj_comment_list";
    }
    
-   
+   @RequestMapping(value="/board/search")
+   public String boardSearch(Model model,Search search,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
+	  List<Board> list = boardservice.searchBoardList(search,(page-1)*5);  
+	  model.addAttribute("list", list);  
+	  model.addAttribute("pagination",setPaginationBoard(page));
+	  return "/board_list";
+   }
    
 }
 

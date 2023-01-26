@@ -1,7 +1,11 @@
 package com.lcomputerstudy.example.service;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lcomputerstudy.example.domain.Board;
+import com.lcomputerstudy.example.domain.Search;
 
 public interface BoardService {
 	public List<Board> selectBoardList(int page);
@@ -24,7 +28,7 @@ public interface BoardService {
 	//답글
 	public void replyBoard(Board board);
 
-
+	public List<Board> searchBoardList(@Param("search")Search search,@Param("pageNum")int page);
 
 }
 

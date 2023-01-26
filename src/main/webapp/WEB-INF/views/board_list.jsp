@@ -104,10 +104,15 @@
 							</li>
 						</c:when>
 						<c:when test="${ pagination.page != i }">    <!--  누르려는 페이지값이  다른페이지면 링크띄움  -->
-							<li>
-								<a href="/board/list?page=${i}">${i}</a>
-							</li>
-						</c:when>
+                            <li>
+                            <c:if test="${search.select==null}">
+                                <a href="/board/list?page=${i}">${i}</a>
+                            </c:if>
+                            <c:if test="${search.select!=null}">    
+                                <a href="/board/list?select=${search.select}&keyword=${search.keyword}&page=${i}">${i}</a>
+                            </c:if>
+                            </li>
+                        </c:when>
 					</c:choose> <%-- 두번쨰 switch 문 닫고 --%>
 			</c:forEach>  <!-- 반복문 끝  -->
 			 <c:choose>  	<%--swtich--%>
@@ -120,9 +125,24 @@
 			</c:choose> 
 		</ul>
 		
+	<div align="center">
+<form action="/board/list" method="get" name="board_search">
+    <select name="select" >
+            <option value=b_title>제목</option>
+            <option value=b_content>제목+내용</option>
+            <option value=b_writer>작성자</option>
+    </select>
+    <input class=textform type=text name=keyword id="search_box"  placeholder="검색어 입력하세요." >
+    <input class=submit type=submit value=검색>
+</form>
+
+</div>	
+		
 	<b><a href="/board/beforewrite"> 글작성 </a></b>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<b><a href="/"> 홈화면 </a></b>
+	
+	
 	
 </body>
 </html>

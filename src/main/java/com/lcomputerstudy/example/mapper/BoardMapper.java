@@ -2,8 +2,11 @@ package com.lcomputerstudy.example.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.lcomputerstudy.example.domain.Board;
 import com.lcomputerstudy.example.domain.Comment;
+import com.lcomputerstudy.example.domain.Search;
 
 @Mapper
 public interface BoardMapper {
@@ -26,9 +29,8 @@ public interface BoardMapper {
 	public void setReply(Board board); 
 	
 	public Board readReply(Board board);
-
-	public List<Comment> selectCommentList(int page);
 	
+	public List<Board> searchBoardList(@Param("search")Search search,@Param("pageNum")int page);
 	
 }
 

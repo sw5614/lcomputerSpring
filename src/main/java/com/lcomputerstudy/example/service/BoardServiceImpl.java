@@ -1,8 +1,11 @@
 package com.lcomputerstudy.example.service;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lcomputerstudy.example.domain.Board;
+import com.lcomputerstudy.example.domain.Search;
 import com.lcomputerstudy.example.mapper.BoardMapper;
 
 @Service("BoardServiceImpl")
@@ -42,6 +45,8 @@ public class BoardServiceImpl implements BoardService {
 		boardmapper.setReply(board);
 	}
 	
-	
+	public List<Board> searchBoardList(@Param("search")Search search,@Param("pageNum")int page){
+		return boardmapper.searchBoardList(search, page);
+	}
 }
 
