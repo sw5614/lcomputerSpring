@@ -47,7 +47,7 @@
      </update>  
      
      <select id="countComment" resultType="int">
-        SELECT COUNT(*)  FROM lc_comment
+        SELECT COUNT(*)  FROM lc_comment WHERE b_id=#{bId}
     </select>   
     
     <update id="editComment" parameterType="Comment">

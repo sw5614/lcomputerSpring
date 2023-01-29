@@ -17,7 +17,7 @@ public interface CommentMapper {
 
 	public Comment readComment(Comment comment);
 
-	public int countComment();
+	public int countComment(Board board);
 
 	public void editComment(Comment comment);
 

@@ -59,6 +59,23 @@
 	
 	 <select id="countBoard" resultType="int">
     	SELECT COUNT(*)  FROM lc_board
+    	
+    	 <where>
+            <if test="search.select == ''">
+                1=1
+            </if>
+            <if test="search.select == 'b_title'">
+                b_title like '%${search.keyword}%'
+            </if>
+            <if test="search.select == 'b_content'">
+                b_title like '%${search.keyword}%'
+                OR b_content like '%${search.keyword}%'
+            </if>
+            <if test="search.select == 'b_writer'">
+                b_writer like '%${search.keyword}%'
+            </if>
+        </where>
+    	
 	</select>	
 	
 	<update id="editBoard" parameterType="Board">

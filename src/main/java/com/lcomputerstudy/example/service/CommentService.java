@@ -12,7 +12,7 @@ public interface CommentService {
 	public void writeComment(Comment comment);
 
 	//댓글카운트
-	public int countComment();
+	public int countComment(Board board);
 	
 	//댓글수정
 	public void editComment(Comment comment);

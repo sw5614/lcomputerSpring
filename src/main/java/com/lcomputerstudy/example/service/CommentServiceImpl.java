@@ -22,8 +22,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public int countComment() {
-		return commentmapper.countComment();
+	public int countComment(Board board) {
+		return commentmapper.countComment(board);
 	}
 	@Override
 	public void editComment(Comment comment) {

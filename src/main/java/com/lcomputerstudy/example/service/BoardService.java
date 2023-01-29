@@ -17,7 +17,7 @@ public interface BoardService {
 	public Board readBoard(Board board);
 
 	//글카운트
-	public int countBoard();
+	public int countBoard(@Param("search")Search search);
 	
 	//글수정
 	public void editBoard(Board board);
@@ -29,6 +29,7 @@ public interface BoardService {
 	public void replyBoard(Board board);
 
 	public List<Board> searchBoardList(@Param("search")Search search,@Param("pageNum")int page);
+
 
 }
 

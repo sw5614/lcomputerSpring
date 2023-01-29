@@ -18,7 +18,7 @@ public interface BoardMapper {
 
 	public Board readBoard(Board board);
 
-	public int countBoard();
+	public int countBoard(@Param("search")Search search);
 
 	public void editBoard(Board board);
 

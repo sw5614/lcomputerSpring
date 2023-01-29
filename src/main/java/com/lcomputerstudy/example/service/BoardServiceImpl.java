@@ -26,9 +26,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardmapper.readBoard(board);
 		
 	}
+	
 	@Override
-	public int countBoard() {
-		return boardmapper.countBoard();
+	public int countBoard(@Param("search")Search search){
+		return boardmapper.countBoard(search);
 	}
 	@Override
 	public void editBoard(Board board) {

@@ -4,12 +4,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.DefaultNamingPolicy;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.lcomputerstudy.example.domain.Board;
 import com.lcomputerstudy.example.domain.Comment;
@@ -28,6 +30,10 @@ public class Controller {
 	@Autowired BoardService boardservice;
 	@Autowired CommentService commentservice;
 	@Autowired PasswordEncoder encoder;
+	private Object request;
+	private Object savePath;
+	private Object uploadFileSizeLimit;
+	private Object encType;
 	
 	public Pagination setPaginationUser(int page) { // 페이지네이션 설정메소드 
 		Pagination pagination = new Pagination();
@@ -36,16 +42,16 @@ public class Controller {
 		pagination.init();
 		return pagination;
 	}
-	public Pagination setPaginationBoard(int page) { // 페이지네이션 설정메소드  // 나중에 합쳐서 객체만넣어서 설정 수정##필수
+	public Pagination setPaginationBoard(int page,Search search) { // 페이지네이션 설정메소드  // 나중에 합쳐서 객체만넣어서 설정 수정##필수
 		Pagination pagination = new Pagination();
-		pagination.setCount(boardservice.countBoard());
+		pagination.setCount(boardservice.countBoard(search));
 		pagination.setPage(page);
 		pagination.init();
 		return pagination;
 	}
-	public Pagination setPaginationComment(int page) { // 페이지네이션 설정메소드  // 나중에 합쳐서 객체만넣어서 설정 수정##필수
+	public Pagination setPaginationComment(int page, Board board) { // 페이지네이션 설정메소드  // 나중에 합쳐서 객체만넣어서 설정 수정##필수
 		Pagination pagination = new Pagination();
-		pagination.setCount(commentservice.countComment());
+		pagination.setCount(commentservice.countComment(board));
 		pagination.setPage(page);
 		pagination.init();
 		return pagination;
@@ -113,7 +119,7 @@ public class Controller {
    public String boardList(Model model,Search search,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
 	  List<Board> list = boardservice.searchBoardList(search,(page-1)*5);  
 	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",setPaginationBoard(page));
+	  model.addAttribute("pagination",setPaginationBoard(page,search));
 	  return "/board_list";
    }
 
@@ -167,7 +173,25 @@ public class Controller {
    @RequestMapping(value="/board/write")
    public String writeBoard(Model model,Board board) {
 	   boardservice.writeBoard(board);
-	   
+	   try {
+			MultipartRequest multi = new MultipartRequest(request,  // enctype="multipart/form-data 은 multi로 받아야함 
+					savePath, //서버상의 실제 디렉토리					
+					uploadFileSizeLimit, // 최대 업로드 파일크기 
+					encType, // 인코딩 방법 
+					// 동일한 이름이 존재하면 새로운 이름이 부여됨 
+					new DefaultFileRenamePolicy();
+			
+			String fileName = multi.getMultipartContentType("uploadFile");
+			if(fileName==null) {// 파일이 업로드 되지않았을떄 
+				System.out.println("파일 업로드 되지않았음");
+			}else { //파일 업로드되었을떄
+				board.setfName(fileName);
+				board.setbTitle(multi.getMultipartContentType(fileName));
+				board.setbContent(multi.getMultipartContentType(fileName));
+			}
+		}catch(Exception e ) {
+			System.out.println("예외 발생 : " + e);
+		}
 	   model.addAttribute("board",boardservice.readBoard(board));
 	   return "/board_info"; // 나중에 info로 변경 
    }
@@ -177,7 +201,7 @@ public class Controller {
        model.addAttribute("board",boardservice.readBoard(board));
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
-	   model.addAttribute("pagination",setPaginationComment(page));
+	   model.addAttribute("pagination",setPaginationComment(page,board));
 	   return "/board_info";
    }
    
@@ -216,7 +240,7 @@ public class Controller {
    public String commentList(Model model,Board board,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 유저 목록 
 	  List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",setPaginationComment(page));
+	  model.addAttribute("pagination",setPaginationComment(page,board));
 	  return "/aj_comment_list";
 	   }
    
@@ -225,7 +249,7 @@ public class Controller {
 	   commentservice.writeComment(comment);
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
-	   model.addAttribute("pagination",setPaginationComment(page));
+	   model.addAttribute("pagination",setPaginationComment(page,board));
 	   return "/aj_comment_list";
    }
    
@@ -234,7 +258,7 @@ public class Controller {
 	   commentservice.editComment(comment);
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
-	   model.addAttribute("pagination",setPaginationComment(page));
+	   model.addAttribute("pagination",setPaginationComment(page,board));
 	   return "/aj_comment_list";
    }
    
@@ -243,7 +267,7 @@ public class Controller {
 	   commentservice.deleteComment(comment);
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
-	   model.addAttribute("pagination",setPaginationComment(page));
+	   model.addAttribute("pagination",setPaginationComment(page,board));
 	   return "/aj_comment_list";
    }
    
@@ -252,17 +276,10 @@ public class Controller {
 	   commentservice.replyComment(comment);
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
-	   model.addAttribute("pagination",setPaginationComment(page));
+	   model.addAttribute("pagination",setPaginationComment(page,board));
 	   return "/aj_comment_list";
    }
    
-   @RequestMapping(value="/board/search")
-   public String boardSearch(Model model,Search search,@RequestParam(value="page", required=false, defaultValue="1") int page){ // 게시물 목록 
-	  List<Board> list = boardservice.searchBoardList(search,(page-1)*5);  
-	  model.addAttribute("list", list);  
-	  model.addAttribute("pagination",setPaginationBoard(page));
-	  return "/board_list";
-   }
    
 }
 
