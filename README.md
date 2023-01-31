@@ -71,6 +71,8 @@ sprint security
  
  -파일업로드 진행 01/26
  
+ -mybatis as 부분 result로 다 매칭해서 바꾸기 
+ 
 
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
 
