@@ -1,25 +1,32 @@
 package com.lcomputerstudy.example.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.DefaultNamingPolicy;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lcomputerstudy.example.domain.Board;
 import com.lcomputerstudy.example.domain.Comment;
 import com.lcomputerstudy.example.domain.Pagination;
 import com.lcomputerstudy.example.domain.Search;
 import com.lcomputerstudy.example.domain.User;
+import com.lcomputerstudy.example.domain.Upload;
 import com.lcomputerstudy.example.service.BoardService;
 import com.lcomputerstudy.example.service.CommentService;
+import com.lcomputerstudy.example.service.UploadService;
 import com.lcomputerstudy.example.service.UserService;
 
 @org.springframework.stereotype.Controller
@@ -30,10 +37,8 @@ public class Controller {
 	@Autowired BoardService boardservice;
 	@Autowired CommentService commentservice;
 	@Autowired PasswordEncoder encoder;
-	private Object request;
-	private Object savePath;
-	private Object uploadFileSizeLimit;
-	private Object encType;
+	@Autowired UploadService uploadservice;
+	String uploadPath="C:\\ServletTest\\Springhome1\\lcomputerSpring\\src\\main\\resources\\static";
 	
 	public Pagination setPaginationUser(int page) { // 페이지네이션 설정메소드 
 		Pagination pagination = new Pagination();
@@ -171,37 +176,44 @@ public class Controller {
    }
    
    @RequestMapping(value="/board/write")
-   public String writeBoard(Model model,Board board) {
+   public String writeBoard(Model model,Board board,Upload upload,@RequestParam MultipartFile[] uploadFile)
+		   throws IllegalStateException, IOException {
+	 
 	   boardservice.writeBoard(board);
-	   try {
-			MultipartRequest multi = new MultipartRequest(request,  // enctype="multipart/form-data 은 multi로 받아야함 
-					savePath, //서버상의 실제 디렉토리					
-					uploadFileSizeLimit, // 최대 업로드 파일크기 
-					encType, // 인코딩 방법 
-					// 동일한 이름이 존재하면 새로운 이름이 부여됨 
-					new DefaultFileRenamePolicy();
-			
-			String fileName = multi.getMultipartContentType("uploadFile");
-			if(fileName==null) {// 파일이 업로드 되지않았을떄 
-				System.out.println("파일 업로드 되지않았음");
-			}else { //파일 업로드되었을떄
-				board.setfName(fileName);
-				board.setbTitle(multi.getMultipartContentType(fileName));
-				board.setbContent(multi.getMultipartContentType(fileName));
+	   upload.setbIdx(board.getbId());
+		
+		for(MultipartFile file : uploadFile) {
+			if(!file.isEmpty()) {
+				String originalName=file.getOriginalFilename();
+				String fileExtension=originalName.substring(originalName.lastIndexOf("."));
+				String uuid = UUID.randomUUID().toString();
+				String uploadName = uuid +  fileExtension;
+				String savefileName= uploadPath + File.separator + uuid + fileExtension;
+				upload.settUpload(uploadName);
+				upload.settFileName(originalName);
+				uploadservice.uploadInsert(upload);
+				
+				Path savePath= Paths.get(savefileName);
+				try {
+					file.transferTo(savePath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}catch(Exception e ) {
-			System.out.println("예외 발생 : " + e);
 		}
 	   model.addAttribute("board",boardservice.readBoard(board));
+	   model.addAttribute("fpath",uploadPath+"\\"+upload.gettFileName());
 	   return "/board_info"; // 나중에 info로 변경 
    }
    
    @RequestMapping(value="/board/info")
-   public String readBoard(Model model, Board board, @RequestParam(value="page", required=false, defaultValue="1") int page) {
+   public String readBoard(Model model, Board board,Upload upload,
+		   @RequestParam(value="page", required=false, defaultValue="1") int page) {
        model.addAttribute("board",boardservice.readBoard(board));
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
 	   model.addAttribute("pagination",setPaginationComment(page,board));
+	   model.addAttribute("fpath",uploadPath+"\\"+upload.gettFileName());
 	   return "/board_info";
    }
    

@@ -82,7 +82,7 @@ a {
 			</tr>
 			<tr>
 				<td>이미지</td>
-			<td><img src="${fpath}"></td>  <!-- 파일업로드 나중에 따로 -->
+			<td><img src="/src/main/resources/static/b265d7ea-ac34-46f8-a6fd-65ec5cb54feb.jpg"></td>  <!-- 파일업로드 나중에 따로 -->
 			</tr>
 	</table>
 	<a href="/board/beforeedit?bId=${board.bId}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>

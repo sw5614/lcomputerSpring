@@ -16,7 +16,7 @@
 	</sec:authorize>
 	<p> 제목: <input type="text" name="bTitle"></p>
 	<p> 내용 : <textarea rows="10" cols="80" name="bContent"></textarea></p>
-	<p> 파일 업로드: <input type="file" name="uploadFile"><br>
+	<p> 파일 업로드: <input type="file" name="uploadFile" multiple="multiple"><br>
 	<p> <input type="submit" value="작성하기"></p>
 </form>
 </body>
