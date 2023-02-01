@@ -14,7 +14,7 @@ public interface BoardService {
 	public void writeBoard(Board board);
 	
 	//글조회
-	public List<Board> readBoard(Board board);
+	public Board  readBoard(Board board);
 
 	//글카운트
 	public int countBoard(@Param("search")Search search);

@@ -22,7 +22,7 @@ public class BoardServiceImpl implements BoardService {
 		boardmapper.setGroup(board); // group setting 
 	}
 	
-	public List<Board> readBoard(Board board) {
+	public Board  readBoard(Board board) {
 		return boardmapper.readBoard(board);
 		
 	}

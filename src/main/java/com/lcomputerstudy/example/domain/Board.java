@@ -15,7 +15,7 @@ public class Board {
 	private int bDepth;
 	private String tUpload;
 	private List<MultipartFile> files;
-	private List<Upload> uFiles;
+	private List<Upload> uploadfiles;
 	
 	public int getbId() {
 		return bId;
@@ -77,11 +77,12 @@ public class Board {
 	public void setFiles(List<MultipartFile> files) {
 		this.files = files;
 	}
-	public List<Upload> getuFiles() {
-		return uFiles;
+	public List<Upload> getUploadfiles() {
+		return uploadfiles;
 	}
-	public void setuFiles(List<Upload> uFiles) {
-		this.uFiles = uFiles;
+	public void setUploadfiles(List<Upload> uploadfiles) {
+		this.uploadfiles = uploadfiles;
 	}
-		
+	
+	
 }

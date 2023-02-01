@@ -16,7 +16,7 @@ public interface BoardMapper {
 
 	public void setGroup(Board board);
 
-	public List<Board> readBoard(Board board);
+	public Board  readBoard(Board board);
 
 	public int countBoard(@Param("search")Search search);
 

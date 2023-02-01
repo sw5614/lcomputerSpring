@@ -201,22 +201,21 @@ public class Controller {
 				}
 			}
 		}
-		List <Board> bList = boardservice.readBoard(board);
+		;
 	   board.settUpload(upload.gettUpload());
-	   model.addAttribute("board",bList);
+	   model.addAttribute("board",boardservice.readBoard(board));
 	   //return "/board_info"; // board_insert result로 보내기
-	   return "redirect:/board/info?bId="+bList.get(1).getbId();  // 리다이렉트는 주소값넣기  파일이름XX
+	   return "redirect:/board/info?bId="+board.getbId();  // 리다이렉트는 주소값넣기  파일이름XX
    }
    
    @RequestMapping(value="/board/info")
    public String readBoard(Model model, Board board,Upload upload,
 		   @RequestParam(value="page", required=false, defaultValue="1") int page) {
-	   List <Board> bList = boardservice.readBoard(board);
-	   model.addAttribute("board",bList);
+	   model.addAttribute("board",boardservice.readBoard(board));
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
 	   model.addAttribute("pagination",setPaginationComment(page,board));
-	   return "/board/info?bId="+bList.get(1).getbId();
+	   return "/board_info";
    }
    
    @RequestMapping(value="/board/edit")

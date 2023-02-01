@@ -18,7 +18,6 @@
 	<p> 내용 : <textarea rows="10" cols="80" name="bContent"></textarea></p>
 	<p> 파일 업로드: <input type="file" name="files" multiple="multiple"><br>
 	<p> 파일 업로드: <input type="file" name="files" multiple="multiple"><br>
-	<p> 파일 업로드: <input type="file" name="files" multiple="multiple"><br>
 	<p> <input type="submit" value="작성하기"></p>
 </form>
 </body>
