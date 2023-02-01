@@ -53,12 +53,9 @@
  				   b_datetime 			as bDateTime,
  				   b_group				as bGroup,
  				   b_order				as bOrder,
- 				   b_depth				as bDepth,
- 				   tb.t_upload			as tUpload				   
-      FROM         lc_board ta 
-      LEFT JOIN lc_upload tb
-      ON ta.b_id=tb.b_idx
-      WHERE       	ta.b_id=#{bId}
+ 				   b_depth				as bDepth
+      FROM         lc_board 
+      WHERE        b_id=#{bId}
    </select>
 	
 	 <select id="countBoard" resultType="int">
