@@ -44,19 +44,32 @@
 	 UPDATE lc_board SET b_group=LAST_INSERT_ID() WHERE b_id=LAST_INSERT_ID()
 	 </update>	
 	 
-	 <select id="readBoard"  parameterType="Board"  resultType="Board">
+	 <select id="readBoard"  parameterType="Board"  resultMap="setBoard">
  	 
- 	  SELECT       b_id					as bId ,
- 	  			   b_title				as bTitle,
- 				   b_content	  		as bContent,
- 				   b_writer				as bWriter,
- 				   b_datetime 			as bDateTime,
- 				   b_group				as bGroup,
- 				   b_order				as bOrder,
- 				   b_depth				as bDepth
+ 	  SELECT       b_id					 ,
+ 	  			   b_title				,
+ 				   b_content	  		,
+ 				   b_writer				,
+ 				   b_datetime 			,
+ 				   b_group				,
+ 				   b_order				,
+ 				   b_depth				
       FROM         lc_board 
       WHERE        b_id=#{bId}
    </select>
+	
+	<resultMap id="setBoard" type="Board">
+		<id property="bId" column="b_id"/>
+		<result property="bTitle" column="b_title"/>
+	    <result property="bContent" column="b_content"/>
+	    <result property="bDateTime" column="b_datetime"/>
+	    <result property="bWriter" column="b_writer"/>
+	    <result property="bGroup" column="b_group"/>
+	    <result property="bOrder" column="b_order"/>
+	    <result property="bDepth" column="b_depth"/>
+	
+	</resultMap>
+	
 	
 	 <select id="countBoard" resultType="int">
     	SELECT COUNT(*)  FROM lc_board

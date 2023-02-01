@@ -85,7 +85,7 @@ a {
 			<tr>	
 	
 				<td>이미지</td>
-			<td><img src="/image/${item.tUpload}" style="width:50%; height:50%;"></td>  <!-- 파일업로드 나중에 따로 -->
+			<td><img src="/image/${item.tUpload}" style="width:30%; height:30%;"></td>  <!-- 파일업로드 나중에 따로 -->
 	
 			</tr>
 			     </c:forEach>
