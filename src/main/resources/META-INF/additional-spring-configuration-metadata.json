@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "spring.devtools.livereload.enabled",
-  "type": "java.lang.String",
-  "description": "A description for 'spring.devtools.livereload.enabled'"
-}]}
+{"properties": [
+  {
+    "name": "spring.devtools.livereload.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.devtools.livereload.enabled'"
+  },
+  {
+    "name": "spring.mvc.view.static-path-pattern",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.mvc.view.static-path-pattern'"
+  }
+]}

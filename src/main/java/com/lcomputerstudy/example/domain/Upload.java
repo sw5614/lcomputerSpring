@@ -1,10 +1,12 @@
 package com.lcomputerstudy.example.domain;
 
+
 public class Upload {
 	private int tIdx;
 	private int bIdx;
 	private String tUpload;
 	private String tFileName;
+
 	
 	public Upload() {}
 	
@@ -32,4 +34,6 @@ public class Upload {
 	public void settFileName(String tFileName) {
 		this.tFileName = tFileName;
 	}
+
+	
 }

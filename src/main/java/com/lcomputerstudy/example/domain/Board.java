@@ -1,5 +1,9 @@
 package com.lcomputerstudy.example.domain;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class Board {
 	private int bId;
 	private String bTitle;
@@ -9,8 +13,9 @@ public class Board {
 	private int bGroup;
 	private int bOrder;
 	private int bDepth;
-	private String fName;
-	
+	private String tUpload;
+	private List<MultipartFile> files;
+	private List<Upload> uFiles;
 	
 	public int getbId() {
 		return bId;
@@ -60,11 +65,23 @@ public class Board {
 	public void setbDepth(int bDepth) {
 		this.bDepth = bDepth;
 	}
-	public String getfName() {
-		return fName;
+	public String gettUpload() {
+		return tUpload;
 	}
-	public void setfName(String fName) {
-		this.fName = fName;
+	public void settUpload(String tUpload) {
+		this.tUpload = tUpload;
 	}
-	
+	public List<MultipartFile> getFiles() {
+		return files;
+	}
+	public void setFiles(List<MultipartFile> files) {
+		this.files = files;
+	}
+	public List<Upload> getuFiles() {
+		return uFiles;
+	}
+	public void setuFiles(List<Upload> uFiles) {
+		this.uFiles = uFiles;
+	}
+		
 }

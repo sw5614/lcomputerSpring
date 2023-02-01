@@ -38,7 +38,9 @@ public class Controller {
 	@Autowired CommentService commentservice;
 	@Autowired PasswordEncoder encoder;
 	@Autowired UploadService uploadservice;
-	String uploadPath="C:\\ServletTest\\Springhome1\\lcomputerSpring\\src\\main\\resources\\static";
+	Path uploadPathRelative= Paths.get("src/main/resources/static/image");
+	Path uploadPath= uploadPathRelative.toAbsolutePath();
+	
 	
 	public Pagination setPaginationUser(int page) { // 페이지네이션 설정메소드 
 		Pagination pagination = new Pagination();
@@ -176,13 +178,11 @@ public class Controller {
    }
    
    @RequestMapping(value="/board/write")
-   public String writeBoard(Model model,Board board,Upload upload,@RequestParam MultipartFile[] uploadFile)
+   public String writeBoard(Model model,Board board,Upload upload)
 		   throws IllegalStateException, IOException {
-	 
 	   boardservice.writeBoard(board);
 	   upload.setbIdx(board.getbId());
-		
-		for(MultipartFile file : uploadFile) {
+		for(MultipartFile file : board.getFiles()) {
 			if(!file.isEmpty()) {
 				String originalName=file.getOriginalFilename();
 				String fileExtension=originalName.substring(originalName.lastIndexOf("."));
@@ -201,20 +201,22 @@ public class Controller {
 				}
 			}
 		}
-	   model.addAttribute("board",boardservice.readBoard(board));
-	   model.addAttribute("fpath",uploadPath+"\\"+upload.gettFileName());
-	   return "/board_info"; // 나중에 info로 변경 
+		List <Board> bList = boardservice.readBoard(board);
+	   board.settUpload(upload.gettUpload());
+	   model.addAttribute("board",bList);
+	   //return "/board_info"; // board_insert result로 보내기
+	   return "redirect:/board/info?bId="+bList.get(1).getbId();  // 리다이렉트는 주소값넣기  파일이름XX
    }
    
    @RequestMapping(value="/board/info")
    public String readBoard(Model model, Board board,Upload upload,
 		   @RequestParam(value="page", required=false, defaultValue="1") int page) {
-       model.addAttribute("board",boardservice.readBoard(board));
+	   List <Board> bList = boardservice.readBoard(board);
+	   model.addAttribute("board",bList);
 	   List<Comment> list = commentservice.selectCommentList(board,(page-1)*5);  
 	   model.addAttribute("list", list);  
 	   model.addAttribute("pagination",setPaginationComment(page,board));
-	   model.addAttribute("fpath",uploadPath+"\\"+upload.gettFileName());
-	   return "/board_info";
+	   return "/board/info?bId="+bList.get(1).getbId();
    }
    
    @RequestMapping(value="/board/edit")
