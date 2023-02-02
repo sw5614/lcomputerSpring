@@ -87,3 +87,13 @@ sprint security
 
 - 수정, 답글 파일업로드 구현 ?  생각좀더해보고 
 
+
+// 재로그인 하지 않고 권한 업데이트 하는 법
+
+Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+
+Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+ SecurityContextHolder.getContext().setAuthentication(newAuth);
