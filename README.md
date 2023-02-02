@@ -69,12 +69,31 @@ sprint security
  
  ㄴ 댓글 수정삭제작성대댓글 완료 
  
- -파일업로드 진행 01/26
+ -파일업로드  0202 완료 ( 다중업로드까지)
  
- -mybatis as 부분 result로 다 매칭해서 바꾸기 
+ -mybatis as 부분 result로 다 매칭해서 바꾸기 02/02 read 부분만 완료 list 목록은 나중에 더 찾아보기  
+ 
+ ㄴ board read 부분만 파일매칭으로 완료 (02/02)
+ 
+ ㄴboard 에서 comment list join으로  1대 다 resultMap 사용?    
  
 
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
 
  ㄴusername 클릭하면 사용자정보 화면 띄우기  -- 완료 
- ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 
+ ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 --완료 
+ 
+- 권한처리 warning 버튼 팝업 ? 
+
+- 수정, 답글 파일업로드 구현 ?  생각좀더해보고 
+
+
+// 재로그인 하지 않고 권한 업데이트 하는 법
+
+Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+
+Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+ SecurityContextHolder.getContext().setAuthentication(newAuth);
