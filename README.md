@@ -80,3 +80,5 @@ sprint security
  ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 --완료 
  
 - 권한처리 warning 버튼 팝업 ? 
+
+- 수정, 답글 파일업로드 구현 ?  생각좀더해보고 
