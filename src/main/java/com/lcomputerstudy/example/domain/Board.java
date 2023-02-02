@@ -16,6 +16,7 @@ public class Board {
 	private String tUpload;
 	private List<MultipartFile> files;
 	private List<Upload> uploadfiles;
+	private List<Comment> commentList;
 	
 	public int getbId() {
 		return bId;
@@ -82,6 +83,12 @@ public class Board {
 	}
 	public void setUploadfiles(List<Upload> uploadfiles) {
 		this.uploadfiles = uploadfiles;
+	}
+	public List<Comment> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
 	}
 	
 	

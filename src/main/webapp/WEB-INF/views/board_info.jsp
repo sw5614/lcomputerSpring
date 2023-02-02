@@ -81,15 +81,12 @@ a {
 				<td height="300">${board.bContent}</td>
 			</tr>
 			
-			     <c:forEach items ="${file.uploadfiles}" var="item" varStatus="status"> 
-			<tr>	
-	
+			<c:forEach items ="${board.uploadfiles}" var="item" varStatus="status"> 
+			<tr>
 				<td>이미지</td>
-			<td><img src="/image/${item.tUpload}" style="width:30%; height:30%;"></td>  <!-- 파일업로드 나중에 따로 -->
-	
+				<td><img src="/image/${item.tUpload}" style="width:30%; height:30%;"></td>  <!-- 파일업로드 나중에 따로 -->
 			</tr>
-			     </c:forEach>
-			
+			</c:forEach>
 	</table>
 	<a href="/board/beforeedit?bId=${board.bId}" style="width: 10%; background-color: #818181; color: #fff;">수정</a>
 	<a href="/board/delete?bId=${board.bId}"	style="width: 10%; font-weight: 700; background-color: red; color: #fff;">삭제</a>

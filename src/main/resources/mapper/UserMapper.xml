@@ -27,6 +27,8 @@
       AND            ta.u_id  =  #{username}
    </select>
    
+   
+   
    <select id="listUser" parameterType="int" resultType="User"> <!--  as 부분은 user.java에 변수이름으로  -->
      SELECT        	 ta.u_id                 						    as   username,
 		                 u_password             					as password,
@@ -46,6 +48,8 @@
      ORDER BY uDateTime asc	
      LIMIT			#{pageNum}, 5
    </select>
+   
+   
    
    <!-- 회원 등록 -->
    <insert id="createUser" parameterType="User">

@@ -46,16 +46,20 @@
 	 
 	 <select id="readBoard"  parameterType="Board"  resultMap="setBoard">
  	 
- 	  SELECT       b_id					 ,
+ 	  SELECT       ta.b_id					 ,
  	  			   b_title				,
  				   b_content	  		,
  				   b_writer				,
  				   b_datetime 			,
  				   b_group				,
  				   b_order				,
- 				   b_depth				
-      FROM         lc_board 
-      WHERE        b_id=#{bId}
+ 				   b_depth			,
+ 				   tb.t_upload ,
+ 				   tb.t_fileName
+      FROM         lc_board ta
+      LEFT JOIN  lc_upload tb
+      ON 		ta.b_id=tb.b_idx	
+      WHERE        ta.b_id=#{bId}
    </select>
 	
 	<resultMap id="setBoard" type="Board">
@@ -67,7 +71,13 @@
 	    <result property="bGroup" column="b_group"/>
 	    <result property="bOrder" column="b_order"/>
 	    <result property="bDepth" column="b_depth"/>
-	
+		
+		<collection property="uploadfiles" ofType="upload"> <!-- uploadfiles(board안에있는 리스트) ofType(리턴타입)  -->
+			<id property="t_idx" column="tIdx"/>
+			 <result property="tUpload" column="t_upload"/>
+			 <result property="tFileName" column="t_fileName"/>
+		</collection>
+		
 	</resultMap>
 	
 	

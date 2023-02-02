@@ -201,11 +201,8 @@ public class Controller {
 				}
 			}
 		}
-	   board.settUpload(upload.gettUpload());
 	   upload.setbIdx(board.getbId());
 	   model.addAttribute("board",boardservice.readBoard(board));
-	   model.addAttribute("upload",uploadservice.uploadRead(upload));
-	   model.addAttribute("file",board);
 	   //return "/board_info"; // board_insert result로 보내기
 	   return "redirect:/board/info?bId="+board.getbId();  // 리다이렉트는 주소값넣기  파일이름XX
    }
