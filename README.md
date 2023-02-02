@@ -69,12 +69,14 @@ sprint security
  
  ㄴ 댓글 수정삭제작성대댓글 완료 
  
- -파일업로드 진행 01/26
+ -파일업로드  0202 완료 ( 다중업로드까지)
  
- -mybatis as 부분 result로 다 매칭해서 바꾸기 
+ -mybatis as 부분 result로 다 매칭해서 바꾸기 02/02 read 부분만 완료 list 목록은 나중에 더 찾아보기  
  
 
 -login 세션값(username) 받아서 오른쪽위에 계속 띄우기 
 
  ㄴusername 클릭하면 사용자정보 화면 띄우기  -- 완료 
- ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 
+ ㄴhome 화면은 따로 리스트마다 detail 마다 버튼 넣기 --완료 
+ 
+- 권한처리 warning 버튼 팝업 ? 
